@@ -6,181 +6,213 @@
 <title>Balón de Oro por datos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Teko:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap">
 <style>
-/* Dato Hace Relato: one dark look, green accent, Teko headlines, Space Grotesk text.
-   Layout: one centered column; weights first, then the history, the season and the player. */
+/* Dato Hace Relato: sports documentary + data lab + archive. Slate surfaces, gold only for
+   results, selected states and findings; Oswald italic headlines, Inter for everything else. */
 :root {
   color-scheme: dark;
-  --bg: #080808;
-  --panel: #0e0e0e;
-  --panel-2: #141414;
-  --line: #222222;
-  --line-soft: #1a1a1a;
-  --green: #00D26A;
-  --green-deep: #0d1f16;
-  --green-tint: #0a140d;
-  --ink: #ffffff;
-  --ink-2: #c9c9c9;
-  --dim: #8a8a8a;
-  --display: 'Teko', 'Arial Narrow', sans-serif;
-  --text: 'Space Grotesk', system-ui, 'Segoe UI', sans-serif;
+  --dhr-bg: #101318;
+  --dhr-surface: #202630;
+  --dhr-surface-hover: #2A313C;
+  --dhr-gold: #E5B84B;
+  --dhr-text: #F4F1E9;
+  --dhr-muted: #8993A2;
+  --dhr-border: #38404A;
+  --dhr-radius: 10px;
+  --bg: var(--dhr-bg);
+  --panel: var(--dhr-surface);
+  --panel-2: var(--dhr-surface-hover);
+  --line: var(--dhr-border);
+  --line-soft: #2A313C;
+  --gold: var(--dhr-gold);
+  --gold-deep: #3a3220;
+  --gold-tint: #1f1d18;
+  --ink: var(--dhr-text);
+  --ink-2: #C9CBCF;
+  --dim: var(--dhr-muted);
+  --muted: var(--dhr-muted);
+  --neutral-bar: #5B6473;
+  --display: 'Oswald', 'Arial Narrow', sans-serif;
+  --text: 'Inter', system-ui, 'Segoe UI', sans-serif;
+  --ease: 180ms ease;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--text); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--text); font-variant-numeric: tabular-nums; }
 .wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-a { color: var(--green); }
-:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+a { color: var(--gold); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.display { font-family: var(--display); font-style: italic; font-weight: 700; text-transform: uppercase; }
 
 /* Header */
-.top { padding-block: 28px 8px; }
-.brand { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); font-weight: 700; }
-h1 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: clamp(44px, 8vw, 76px); line-height: .95; margin: 6px 0 0; letter-spacing: .5px; text-wrap: balance; }
-h1 span, h2 span { color: var(--green); }
-.subtitle { color: var(--dim); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin: 8px 0 0; }
-.lede { color: var(--ink-2); margin: 14px 0 0; }
-nav.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
-nav.jump a { text-decoration: none; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; font-size: 13px; }
-nav.jump a:hover { border-color: var(--green); color: var(--ink); }
+.top { padding-block: 32px 8px; }
+.brand { font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink); font-weight: 700; }
+.brand span { color: var(--dim); font-weight: 500; }
+h1 { font-family: var(--display); font-style: italic; font-weight: 700; text-transform: uppercase; font-size: clamp(36px, 6.4vw, 64px); line-height: 1.02; margin: 12px 0 0; letter-spacing: .2px; text-wrap: balance; }
+h1 span { color: var(--gold); }
+.lede { color: var(--ink-2); font-size: 17px; margin: 12px 0 0; max-width: 62ch; }
+.subtitle { color: var(--dim); font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; margin: 10px 0 0; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 0; }
+nav.jump a { text-decoration: none; color: var(--ink-2); border: 1px solid var(--line); border-radius: 6px; padding: 5px 12px; font-size: 13px; transition: border-color var(--ease), color var(--ease), background var(--ease); }
+nav.jump a:hover { background: var(--panel-2); color: var(--ink); }
 
 /* Sections */
-section.block { padding-block: 26px 6px; }
-h2 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 38px; line-height: 1; margin: 0; text-transform: uppercase; letter-spacing: .5px; }
-.sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+section.block { padding-block: 28px 6px; }
+.kicker { display: block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 4px; }
+.kicker b { color: var(--ink); font-weight: 700; margin-right: 6px; }
+h2 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: clamp(26px, 4vw, 34px); line-height: 1.05; margin: 0; text-transform: uppercase; letter-spacing: .2px; }
+h2 span { color: var(--ink); }
 .hint { color: var(--dim); font-size: 13px; margin: 6px 0 0; }
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--dhr-radius); padding: 16px; }
 .scroll { overflow-x: auto; }
 
-/* Controls */
-select, button { font: inherit; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
-button { cursor: pointer; }
-button:hover, select:hover { border-color: var(--green); }
-button.primary { background: var(--green); color: #080808; border-color: var(--green); font-weight: 700; }
-.season-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--dim); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; max-width: 100%; min-width: 0; }
-.season-pick select { font-family: var(--display); font-size: 26px; font-weight: 700; padding: 2px 12px; line-height: 1.2; text-transform: none; letter-spacing: 0; max-width: 100%; min-width: 0; }
-.sec-head > div { min-width: 0; }
+/* Controls: compact, rectangular, clear selected state */
+select, button { font: inherit; font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; transition: background var(--ease), border-color var(--ease), color var(--ease); }
+button { cursor: pointer; font-weight: 600; }
+button:hover, select:hover { background: var(--panel-2); border-color: #4A535F; }
+button.primary { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 700; }
+.season-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--dim); font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; max-width: 100%; min-width: 0; }
+.season-pick select { font-family: var(--display); font-style: italic; font-size: 22px; font-weight: 700; padding: 3px 12px; line-height: 1.2; text-transform: none; letter-spacing: 0; max-width: 100%; min-width: 0; border-color: var(--gold); }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 
 /* Collapsible sections: the title is the toggle */
-details.sec > summary { padding-block: 4px; border-bottom: 1px solid var(--line-soft); margin-bottom: 12px; }
-details.sec > summary::after { font-size: 40px; }
+details.sec > summary { padding-block: 4px 12px; border-bottom: 1px solid var(--line); margin-bottom: 14px; align-items: flex-end; }
+details.sec > summary::after { font-size: 28px; }
 details.sec:not([open]) > summary { margin-bottom: 0; }
 details.sec > summary:hover h2 { color: var(--ink-2); }
 .sec-tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
 .sec-tools > :only-child { margin-left: auto; }
-summary .in-summary { margin-left: auto; font-size: 13px; padding: 6px 12px; }
+summary .in-summary { margin-left: auto; font-size: 13px; padding: 6px 12px; white-space: nowrap; flex: none; }
 .sec-tools .hint { margin: 0; flex: 1 1 320px; }
+
 /* Factor weights: the main controls, large */
-#weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px; }
-.wcard { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 12px; display: grid; gap: 6px; }
+#weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 10px; }
+.wcard { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: var(--dhr-radius); padding: 14px 16px 12px; display: grid; gap: 6px; transition: border-color var(--ease), background var(--ease); }
+.wcard:hover { background: var(--panel-2); }
 .wcard .wtop { display: flex; align-items: center; gap: 8px; }
-.wcard .wname { font-weight: 700; font-size: 15px; cursor: pointer; }
+.wcard .wname { font-weight: 600; font-size: 14px; cursor: pointer; }
 /* The raw points sit under the slider thumb (16px wide in Chromium) */
 .wslider { position: relative; padding-bottom: 16px; }
-.wcard .wpts { position: absolute; top: 22px; left: calc(var(--p, 0) * (100% - 16px) + 8px); transform: translateX(-50%); color: var(--dim); font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; }
-.wcard output { margin-left: auto; font-family: var(--display); font-size: 40px; font-weight: 700; line-height: .9; color: var(--green); font-variant-numeric: tabular-nums; }
+.wcard .wpts { position: absolute; top: 22px; left: calc(var(--p, 0) * (100% - 16px) + 8px); transform: translateX(-50%); color: var(--dim); font-size: 11px; font-weight: 500; line-height: 1; }
+.wcard output { margin-left: auto; font-family: var(--display); font-style: italic; font-size: 34px; font-weight: 700; line-height: .95; color: var(--ink); }
 /* "i" badge: the factor's description shows on hover or keyboard focus */
-.info { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--dim); color: var(--dim); font-size: 11px; font-weight: 700; display: grid; place-items: center; cursor: help; font-style: italic; }
-.info:hover, .info:focus-visible { border-color: var(--green); color: var(--green); }
-.infobox { position: absolute; left: 12px; right: 12px; top: 54px; background: var(--panel-2); color: var(--ink-2); border: 1px solid var(--green); border-radius: 10px; padding: 8px 10px; font-size: 12px; font-style: normal; font-weight: 400; line-height: 1.4; z-index: 5; box-shadow: 0 6px 24px rgba(0,0,0,.6); display: none; }
+.info { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--dim); color: var(--dim); font-size: 11px; font-weight: 700; display: grid; place-items: center; cursor: help; font-style: italic; transition: border-color var(--ease), color var(--ease); }
+.info:hover, .info:focus-visible { border-color: var(--ink); color: var(--ink); }
+.infobox { position: absolute; left: 12px; right: 12px; top: 54px; background: var(--panel-2); color: var(--ink-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12px; font-style: normal; font-weight: 400; line-height: 1.45; z-index: 5; display: none; }
 .info:hover .infobox, .info:focus .infobox { display: block; }
-input[type=range] { width: 100%; accent-color: var(--green); }
+input[type=range] { width: 100%; accent-color: var(--gold); }
 
 /* Advanced settings */
-details.advanced { margin-top: 14px; }
-details > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 700; }
+details.advanced { margin-top: 12px; }
+details > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 600; }
 details > summary::-webkit-details-marker { display: none; }
-details > summary::after { content: "+"; font-family: var(--display); font-size: 26px; line-height: 1; color: var(--green); }
+details > summary::after { content: "+"; font-family: var(--text); font-weight: 400; font-size: 22px; line-height: 1; color: var(--dim); }
 details[open] > summary::after { content: "–"; }
-details.advanced > summary { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; }
-details.advanced[open] > summary { border-color: var(--green); }
-.adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 12px; margin-top: 12px; align-items: start; }
-.adv-grid h3 { font-family: var(--display); font-style: italic; font-size: 24px; font-weight: 700; margin: 0; text-transform: uppercase; }
+details.advanced > summary { background: var(--panel); border: 1px solid var(--line); border-radius: var(--dhr-radius); padding: 11px 16px; font-size: 14px; transition: background var(--ease); }
+details.advanced > summary:hover { background: var(--panel-2); }
+.adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 10px; margin-top: 10px; align-items: start; }
+.adv-grid h3 { font-family: var(--display); font-style: italic; font-size: 20px; font-weight: 700; margin: 0; text-transform: uppercase; }
 .adv-grid label.src { display: grid; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--ink-2); }
 .slider { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin: 12px 0; }
 .slider span { font-size: 13px; color: var(--ink-2); }
-.slider output { font-variant-numeric: tabular-nums; color: var(--green); font-size: 13px; font-weight: 700; text-align: right; }
+.slider output { color: var(--ink); font-size: 13px; font-weight: 700; text-align: right; }
 .slider input { grid-column: 1 / -1; }
 .tier-row { display: grid; grid-template-columns: 1fr 70px; gap: 8px; align-items: center; margin: 4px 0; font-size: 13px; color: var(--ink-2); }
-.tier-row select { padding: 3px 6px; }
+.tier-row select { padding: 3px 6px; font-size: 13px; }
 
-/* Season summary tiles */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px; margin-bottom: 12px; }
-.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
-.stat .k { font-size: 12px; color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase; }
-.stat .v { font-family: var(--display); font-size: 34px; font-weight: 700; line-height: 1; margin-top: 6px; }
-.stat:first-child { border-color: var(--green); background: var(--green-tint); }
-.stat:first-child .v { color: var(--green); }
+/* Season summary tiles: the model's winner is the finding */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 10px; margin-bottom: 12px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--dhr-radius); padding: 14px 16px; }
+.stat .k { font-size: 11px; font-weight: 600; color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase; }
+.stat .v { font-family: var(--display); font-style: italic; text-transform: uppercase; font-size: 28px; font-weight: 700; line-height: 1.05; margin-top: 6px; }
+.stat:first-child { border-color: var(--gold); }
+.stat:first-child .k { color: var(--gold); }
+.stat:first-child .v { color: var(--gold); }
 .stat .d { font-size: 12px; color: var(--dim); margin-top: 4px; }
-.note { font-size: 13px; color: var(--ink-2); background: var(--green-tint); border: 1px solid var(--green-deep); border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; }
+.note { font-size: 13px; color: var(--ink-2); background: var(--gold-tint); border: 1px solid var(--gold-deep); border-left: 3px solid var(--gold); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; }
 
 /* Tables */
 table { border-collapse: separate; border-spacing: 0; width: 100%; font-variant-numeric: tabular-nums; }
 th, td { padding: 0; text-align: center; white-space: nowrap; }
 th.left, td.left { text-align: left; }
-thead th { font-size: 12px; font-weight: 700; color: var(--dim); padding: 8px 4px; vertical-align: bottom; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; letter-spacing: .5px; text-transform: uppercase; }
-thead th .w { display: block; font-weight: 700; color: var(--green); font-size: 13px; text-transform: none; }
-thead th.sorted { color: var(--ink); }
+thead th { font-size: 11px; font-weight: 600; color: var(--dim); padding: 8px 4px; vertical-align: bottom; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; letter-spacing: 1px; text-transform: uppercase; transition: color var(--ease); }
+thead th:hover { color: var(--ink-2); }
+thead th .w { display: block; font-weight: 700; color: var(--ink-2); font-size: 12px; text-transform: none; letter-spacing: 0; }
+thead th.sorted { color: var(--ink); box-shadow: inset 0 -2px 0 var(--gold); }
 tbody tr { cursor: pointer; }
+tbody tr td.name, tbody tr td.plain { transition: background var(--ease); }
 tbody tr:hover td.name, tbody tr:hover td.plain { background: var(--panel-2); }
-tbody tr.sel td.name { box-shadow: inset 3px 0 0 var(--green); }
+tbody tr.sel td.name { box-shadow: inset 3px 0 0 var(--gold); }
+tbody tr.sel td.name b { color: var(--gold); }
 td.plain { padding: 0 8px; color: var(--ink-2); }
 td.plain small { color: var(--dim) !important; }
+td.rankno { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 20px; color: var(--dim); }
+tr.top td.rankno { color: var(--gold); }
 td.name { padding: 6px 10px 6px 8px; min-width: 190px; }
-td.name b { font-weight: 700; }
+td.name b { font-weight: 600; }
 td.name small { display: block; color: var(--dim); font-size: 11px; }
 td.cell { padding: 2px; }
-td.cell div { width: 64px; height: 34px; margin: 0 auto; border-radius: 6px; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+td.cell div { width: 60px; height: 32px; margin: 0 auto; border-radius: 4px; display: grid; place-items: center; font-size: 13px; font-weight: 600; }
 td.cell div.na { color: var(--dim); font-weight: 400; background: transparent; border: 1px dashed var(--line); }
 td.cell div.off { opacity: .35; }
 td.total { padding: 0 8px; min-width: 160px; }
-.bar { display: grid; grid-template-columns: 1fr 40px; align-items: center; gap: 8px; }
-.bar i { display: block; height: 10px; border-radius: 0 4px 4px 0; background: var(--green); }
-.bar b { font-family: var(--display); font-size: 22px; text-align: right; }
-.delta { font-size: 12px; }
-.delta.up { color: var(--green); }
+.bar { display: grid; grid-template-columns: 1fr 46px; align-items: center; gap: 8px; }
+.bar i { display: block; height: 8px; border-radius: 0 3px 3px 0; background: var(--neutral-bar); }
+.bar b { font-family: var(--display); font-style: italic; font-size: 20px; text-align: right; }
+tr.top .bar i { background: var(--gold); }
+tr.top .bar b { color: var(--gold); }
+.delta { font-size: 12px; font-weight: 600; }
+.delta.up { color: var(--ink); }
 .delta.down { color: var(--dim); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--dim); margin-top: 12px; }
-.ramp { display: inline-flex; border-radius: 4px; overflow: hidden; vertical-align: middle; margin: 0 6px; }
+.ramp { display: inline-flex; border-radius: 3px; overflow: hidden; vertical-align: middle; margin: 0 6px; }
 .ramp i { width: 18px; height: 10px; display: block; }
 
-/* Medal table */
+/* Medal table: big numbers, the leader in gold, the gaps still visible */
 table.medals { width: 100%; }
 table.medals th, table.medals td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); font-size: 14px; cursor: default; }
+table.medals thead th:hover { color: var(--dim); }
 table.medals tbody tr { cursor: default; }
-table.medals td:first-child { font-family: var(--display); font-size: 24px; color: var(--dim); }
-table.medals td.first { font-family: var(--display); font-size: 30px; font-weight: 700; color: var(--green); }
-table.medals td.zero { color: #4a4a4a; }
+table.medals td:first-child { font-family: var(--display); font-style: italic; font-size: 22px; color: var(--dim); }
+table.medals td.first { font-family: var(--display); font-style: italic; font-size: 30px; font-weight: 700; color: var(--ink); }
+table.medals tbody tr:first-child td.first { color: var(--gold); }
+table.medals td.zero { color: #4A525E; }
 table.medals .years { display: block; color: var(--dim); font-size: 11px; font-weight: 400; white-space: normal; }
-table.medals tbody tr:first-child td.left b { color: var(--green); }
+table.medals tbody tr:first-child td.left b { color: var(--gold); }
+table.medals tbody tr:first-child td:first-child { color: var(--gold); }
 
 /* Player breakdown */
-.detail h3 { font-family: var(--display); font-style: italic; font-size: 30px; font-weight: 700; margin: 0; text-transform: uppercase; }
+.detail h3 { font-family: var(--display); font-style: italic; font-size: 28px; font-weight: 700; margin: 0; text-transform: uppercase; }
 .detail table { margin-top: 10px; }
 .detail th, .detail td { padding: 6px 8px; font-size: 12px; border-bottom: 1px solid var(--line-soft); }
 .detail th { cursor: default; }
 .detail td.left { color: var(--ink); }
 .detail .hint { margin-top: 4px; }
-.tierpill { display: inline-block; min-width: 24px; padding: 1px 7px; border-radius: 10px; background: var(--green-deep); color: var(--green); font-size: 11px; font-weight: 700; }
+.tierpill { display: inline-block; min-width: 24px; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--ink-2); font-size: 11px; font-weight: 600; }
 
-/* Methodology and footer */
-.method p { margin: 10px 0; color: var(--ink-2); font-size: 14px; }
+/* Methodology: a case file */
+.method .panel.file { padding: 0; overflow: hidden; counter-reset: clause; }
+.file-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 16px; border-bottom: 1px dashed var(--line); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); }
+.file-head b { color: var(--ink); }
+.method p { margin: 0; padding: 12px 16px 12px 64px; position: relative; color: var(--ink-2); font-size: 14px; border-bottom: 1px solid var(--line-soft); }
+.method p:last-child { border-bottom: 0; }
+.method p::before { counter-increment: clause; content: counter(clause, decimal-leading-zero); position: absolute; left: 16px; top: 11px; font-family: var(--display); font-style: italic; font-weight: 700; font-size: 18px; color: var(--dim); }
 .method b { color: var(--ink); }
-footer { color: var(--dim); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding-block: 28px 36px; border-top: 1px solid var(--line-soft); margin-top: 28px; }
-footer b { color: var(--green); }
-#tip { position: fixed; pointer-events: none; z-index: 10; max-width: 280px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--green); border-radius: 10px; padding: 8px 10px; font-size: 12px; box-shadow: 0 6px 24px rgba(0,0,0,.6); display: none; }
+footer { color: var(--dim); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; padding-block: 28px 36px; border-top: 1px solid var(--line); margin-top: 32px; }
+footer b { color: var(--ink); }
+#tip { position: fixed; pointer-events: none; z-index: 10; max-width: 280px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12px; display: none; }
 #tip b { display: block; margin-bottom: 2px; }
 #tip span { color: var(--ink-2); }
 </style>
 </head>
 <body>
 <header class="top wrap">
-  <div class="brand">Dato Hace Relato</div>
-  <h1>BALÓN DE ORO <span>POR DATOS</span></h1>
+  <div class="brand">Dato Hace Relato <span>/ Investigación</span></div>
+  <h1>¿Quién merecía el <span>Balón de Oro</span>?</h1>
+  <p class="lede">La historia dice quién ganó. Los datos nos permiten discutir quién debió ganar.</p>
   <p class="subtitle">Modelo propio · FotMob, Sofascore y WhoScored · 2006–2026</p>
-  <p class="lede">Puntuamos a los nominados de 0 a 100 con datos de partido, ponderando cada torneo por su importancia.</p>
   <nav class="jump" aria-label="Secciones">
     <a href="#pesos">Pesos</a><a href="#palmares">Palmarés</a><a href="#temporada">Temporada</a><a href="#jugador">Jugador</a><a href="#metodologia">Metodología</a>
   </nav>
@@ -189,7 +221,7 @@ footer b { color: var(--green); }
 <main class="wrap">
   <section class="block" id="pesos">
     <details class="sec" open>
-      <summary><h2>Peso de <span>cada factor</span></h2><button id="reset" type="button" class="in-summary">Restablecer todo</button></summary>
+      <summary><div><span class="kicker"><b>01</b>El modelo</span><h2>Peso de cada factor</h2></div><button id="reset" type="button" class="in-summary">Restablecer todo</button></summary>
       <div id="weights"></div>
       <details class="advanced">
         <summary>Ajustes avanzados: fuentes, tiers, rondas y participación</summary>
@@ -223,7 +255,7 @@ footer b { color: var(--green); }
 
   <section class="block" id="palmares">
     <details class="sec" open>
-      <summary><h2>Palmarés <span>del modelo</span></h2></summary>
+      <summary><div><span class="kicker"><b>02</b>Análisis histórico</span><h2>Palmarés del modelo</h2></div></summary>
       <p class="hint">2006–2025 con los pesos actuales: todos los jugadores que el modelo hace ganar al menos un Balón de Oro, con cuántas veces terminan en cada puesto.</p>
       <div class="panel scroll"><table class="medals" id="medals"></table></div>
     </details>
@@ -231,7 +263,7 @@ footer b { color: var(--green); }
 
   <section class="block" id="temporada">
     <details class="sec" open>
-      <summary><h2>La <span>temporada</span></h2></summary>
+      <summary><div><span class="kicker"><b>03</b>Resultado del modelo</span><h2>La temporada</h2></div></summary>
       <div class="sec-tools">
         <p class="hint">Cada celda es la puntuación del jugador en ese factor (100 = el mejor nominado del año). Haz clic en un jugador para ver su desglose o en una cabecera para ordenar.</p>
         <label class="season-pick">Temporada <select id="season"></select></label>
@@ -251,7 +283,7 @@ footer b { color: var(--green); }
 
   <section class="block" id="jugador">
     <details class="sec" open>
-      <summary><h2>Desglose <span>del jugador</span></h2></summary>
+      <summary><div><span class="kicker"><b>04</b>Expediente del jugador</span><h2>Desglose del jugador</h2></div></summary>
       <div class="sec-tools"><label class="season-pick">Jugador <select id="playerPick"></select></label></div>
       <div class="panel detail" id="detail"></div>
     </details>
@@ -259,8 +291,9 @@ footer b { color: var(--green); }
 
   <section class="block method" id="metodologia">
     <details class="sec">
-      <summary><h2>Cómo se <span>calcula</span></h2></summary>
-      <div class="panel">
+      <summary><div><span class="kicker"><b>05</b>Metodología</span><h2>Cómo se calcula</h2></div></summary>
+      <div class="panel file">
+        <div class="file-head"><span><b>Expediente</b> · Balón de Oro por datos</span><span>Fuentes: FotMob · Sofascore · WhoScored</span></div>
         <p><b>Rendimiento:</b> cada competición suma lo que el jugador rindió por encima de la nota base: aporte = (nota media por partido − 6,5) × peso del tier × participación. El total es la suma de todas sus competiciones; 100 = el nominado que más sumó. Jugar más torneos a buen nivel siempre suma, y un buen Mundial (×1,0) suma el doble que una buena MLS (×0,5) al mismo nivel. Una nota por debajo de la base resta.</p>
         <p><b>Dominio posicional:</b> media de los 5 mejores percentiles por 90' de FotMob frente a jugadores de su misma posición (porteros con métricas de portero), en cada competición. Se suma igual que el rendimiento: aporte = (percentil − base) / 10 × peso del tier × participación. Así un central o un portero puede puntuar alto sin marcar goles. Una competición sin percentiles no suma ni resta.</p>
         <p><b>Goles + asistencias:</b> los goles y asistencias de cada competición, multiplicados por el peso del tier. 100 = el nominado que más produjo. Favorece a delanteros y mediapuntas; Dominio posicional compensa a las demás posiciones.</p>
@@ -353,8 +386,8 @@ function teamMatches(r) {
 const possibleMin = r => { const n = teamMatches(r); return n ? n * 90 : null; };
 
 // Sequential blue ramp (reference palette), light → dark for magnitude.
-// Sequential green on the black background: near-black (low) to the brand green (high).
-const RAMP = ["#0f1913", "#11281b", "#123722", "#13472a", "#135832", "#126a3a", "#0f7d43", "#0b914c", "#06a656", "#02bc60", "#00D26A"];
+// Neutral slate for most of the scale; only the top of it (90+) turns gold.
+const RAMP = ["#232a35", "#2c343f", "#363e4a", "#3f4754", "#48515e", "#525b69", "#5b6473", "#656e7e", "#6e7888", "#a88a45", "#E5B84B"];
 const FACTOR_DESC = {
   rend: "Nota de cada partido por encima de lo normal, según la importancia del torneo.",
   dom: "Mejores métricas frente a jugadores de su misma posición.",
@@ -530,7 +563,7 @@ const $ = s => document.querySelector(s);
 const fmt = (v, d = 0) => v == null ? "—" : v.toLocaleString("es-ES", { maximumFractionDigits: d, minimumFractionDigits: d });
 function cellStyle(v) {
   const i = Math.min(RAMP.length - 1, Math.floor(v / 100 * RAMP.length));
-  return `background:${RAMP[i]};color:${i >= 7 ? "#080808" : "#ffffff"}`;
+  return `background:${RAMP[i]};color:${i >= 9 ? "#101318" : "#F4F1E9"}`;
 }
 
 function buildControls() {
@@ -696,8 +729,8 @@ function renderMatrix(list) {
     const delta = x.rank != null && x.modelRank != null ? x.rank - x.modelRank : null;
     const dHtml = delta == null || delta === 0 ? `<span class="delta down">${delta === 0 ? "=" : "—"}</span>`
       : delta > 0 ? `<span class="delta up">▲ ${delta}</span>` : `<span class="delta down">▼ ${-delta}</span>`;
-    return `<tr data-p="${x.p.replace(/"/g, "&quot;")}" class="${state.selected === x.p ? "sel" : ""}">
-      <td class="plain">${x.modelRank ?? "—"}</td>
+    return `<tr data-p="${x.p.replace(/"/g, "&quot;")}" class="${state.selected === x.p ? "sel" : ""}${x.modelRank === 1 ? " top" : ""}">
+      <td class="plain rankno">${x.modelRank ?? "—"}</td>
       <td class="name left"><b>${x.p}</b><small>${x.club ?? ""} · ${x.country ?? ""}</small></td>
       ${cells}
       <td class="total">${x.noData ? `<span class="hint">Sin datos</span>` : `<div class="bar"><i style="width:${Math.max(2, x.total)}%"></i><b>${fmt(x.total, 1)}</b></div>`}</td>
