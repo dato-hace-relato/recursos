@@ -4,249 +4,288 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Balón de Oro por datos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Teko:wght@500;700&display=swap">
 <style>
+/* Dato Hace Relato: one dark look, green accent, Teko headlines, Space Grotesk text.
+   Layout: one centered column; weights first, then the history, the season and the player. */
 :root {
-  color-scheme: light;
-  --page: #f9f9f7;
-  --surface: #fcfcfb;
-  --ink: #0b0b0b;
-  --ink-2: #52514e;
-  --muted: #898781;
-  --grid: #e1e0d9;
-  --axis: #c3c2b7;
-  --border: rgba(11,11,11,0.10);
-  --accent: #2a78d6;
-  --accent-soft: #cde2fb;
-  --row-hover: #f0efec;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --page: #0d0d0d;
-    --surface: #1a1a19;
-    --ink: #f0efec;
-    --ink-2: #c3c2b7;
-    --muted: #898781;
-    --grid: #2c2c2a;
-    --axis: #383835;
-    --border: rgba(255,255,255,0.10);
-    --accent: #3987e5;
-    --accent-soft: #184f95;
-    --row-hover: #262624;
-  }
-}
-:root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #0d0d0d;
-  --surface: #1a1a19;
-  --ink: #f0efec;
-  --ink-2: #c3c2b7;
-  --muted: #898781;
-  --grid: #2c2c2a;
-  --axis: #383835;
-  --border: rgba(255,255,255,0.10);
-  --accent: #3987e5;
-  --accent-soft: #184f95;
-  --row-hover: #262624;
+  --bg: #080808;
+  --panel: #0e0e0e;
+  --panel-2: #141414;
+  --line: #222222;
+  --line-soft: #1a1a1a;
+  --green: #00D26A;
+  --green-deep: #0d1f16;
+  --green-tint: #0a140d;
+  --ink: #ffffff;
+  --ink-2: #c9c9c9;
+  --dim: #8a8a8a;
+  --display: 'Teko', 'Arial Narrow', sans-serif;
+  --text: 'Space Grotesk', system-ui, 'Segoe UI', sans-serif;
 }
 * { box-sizing: border-box; }
-body {
-  margin: 0; background: var(--page); color: var(--ink);
-  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
-}
-header { padding: 20px 16px 8px; max-width: 1480px; margin: 0 auto; }
-h1 { font-size: 22px; margin: 0 0 4px; font-weight: 650; }
-.sub { color: var(--ink-2); margin: 0; max-width: 820px; }
-.toolbar {
-  display: flex; flex-wrap: wrap; gap: 12px; align-items: end;
-  padding: 12px 16px; max-width: 1480px; margin: 0 auto;
-}
-.toolbar label { display: grid; gap: 4px; font-size: 12px; color: var(--ink-2); }
-select, button {
-  font: inherit; color: var(--ink); background: var(--surface);
-  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px;
-}
-button { cursor: pointer; }
-button:hover, select:hover { border-color: var(--axis); }
-button.primary { background: var(--accent); color: #fff; border-color: transparent; }
-.layout {
-  display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 16px;
-  padding: 0 16px 32px; max-width: 1480px; margin: 0 auto;
-}
-@media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
-.card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  padding: 14px 16px;
-}
-aside { display: grid; gap: 12px; align-content: start; }
-details > summary {
-  cursor: pointer; font-weight: 600; list-style: none; display: flex;
-  justify-content: space-between; align-items: center;
-}
-details > summary::after { content: "▾"; color: var(--muted); }
-details:not([open]) > summary::after { content: "▸"; }
-.hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
-.slider { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin: 10px 0; }
-.slider span { font-size: 13px; }
-.slider output { font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 12px; text-align: right; }
-.slider input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
-.share { display: inline-block; min-width: 38px; }
-.tier-row { display: grid; grid-template-columns: 1fr 64px; gap: 8px; align-items: center; margin: 4px 0; font-size: 13px; }
-.tier-row select { padding: 2px 4px; }
-main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; min-width: 0; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 12px; }
-.stat .k { font-size: 12px; color: var(--ink-2); }
-.stat .v { font-size: 20px; font-weight: 650; margin-top: 2px; }
-.stat .d { font-size: 12px; color: var(--muted); }
-.note { font-size: 12px; color: var(--ink-2); background: var(--row-hover); border-radius: 8px; padding: 8px 10px; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--text); }
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: var(--green); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* Header */
+.top { padding-block: 28px 8px; }
+.brand { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); font-weight: 700; }
+h1 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: clamp(44px, 8vw, 76px); line-height: .95; margin: 6px 0 0; letter-spacing: .5px; text-wrap: balance; }
+h1 span, h2 span { color: var(--green); }
+.subtitle { color: var(--dim); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin: 8px 0 0; }
+.lede { color: var(--ink-2); margin: 14px 0 0; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
+nav.jump a { text-decoration: none; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; font-size: 13px; }
+nav.jump a:hover { border-color: var(--green); color: var(--ink); }
+
+/* Sections */
+section.block { padding-block: 26px 6px; }
+h2 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 38px; line-height: 1; margin: 0; text-transform: uppercase; letter-spacing: .5px; }
+.sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.hint { color: var(--dim); font-size: 13px; margin: 6px 0 0; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
 .scroll { overflow-x: auto; }
-.sec-title { font-size: 16px; font-weight: 650; margin: 0; }
-table.medals { max-width: 640px; }
-table.medals th, table.medals td { padding: 6px 10px; border-bottom: 1px solid var(--grid); font-size: 13px; }
-table.medals th { color: var(--ink-2); font-weight: 600; cursor: default; border-bottom-color: var(--axis); }
-table.medals td.first { font-weight: 700; }
-table.medals td.zero { color: var(--muted); }
-table.medals .years { display: block; color: var(--muted); font-size: 11px; font-weight: 400; }
+
+/* Controls */
+select, button { font: inherit; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+button { cursor: pointer; }
+button:hover, select:hover { border-color: var(--green); }
+button.primary { background: var(--green); color: #080808; border-color: var(--green); font-weight: 700; }
+.season-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--dim); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; max-width: 100%; min-width: 0; }
+.season-pick select { font-family: var(--display); font-size: 26px; font-weight: 700; padding: 2px 12px; line-height: 1.2; text-transform: none; letter-spacing: 0; max-width: 100%; min-width: 0; }
+.sec-head > div { min-width: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+/* Collapsible sections: the title is the toggle */
+details.sec > summary { padding-block: 4px; border-bottom: 1px solid var(--line-soft); margin-bottom: 12px; }
+details.sec > summary::after { font-size: 40px; }
+details.sec:not([open]) > summary { margin-bottom: 0; }
+details.sec > summary:hover h2 { color: var(--ink-2); }
+.sec-tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.sec-tools > :only-child { margin-left: auto; }
+summary .in-summary { margin-left: auto; font-size: 13px; padding: 6px 12px; }
+.sec-tools .hint { margin: 0; flex: 1 1 320px; }
+/* Factor weights: the main controls, large */
+#weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px; }
+.wcard { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 12px; display: grid; gap: 6px; }
+.wcard .wtop { display: flex; align-items: center; gap: 8px; }
+.wcard .wname { font-weight: 700; font-size: 15px; cursor: pointer; }
+/* The raw points sit under the slider thumb (16px wide in Chromium) */
+.wslider { position: relative; padding-bottom: 16px; }
+.wcard .wpts { position: absolute; top: 22px; left: calc(var(--p, 0) * (100% - 16px) + 8px); transform: translateX(-50%); color: var(--dim); font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; }
+.wcard output { margin-left: auto; font-family: var(--display); font-size: 40px; font-weight: 700; line-height: .9; color: var(--green); font-variant-numeric: tabular-nums; }
+/* "i" badge: the factor's description shows on hover or keyboard focus */
+.info { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--dim); color: var(--dim); font-size: 11px; font-weight: 700; display: grid; place-items: center; cursor: help; font-style: italic; }
+.info:hover, .info:focus-visible { border-color: var(--green); color: var(--green); }
+.infobox { position: absolute; left: 12px; right: 12px; top: 54px; background: var(--panel-2); color: var(--ink-2); border: 1px solid var(--green); border-radius: 10px; padding: 8px 10px; font-size: 12px; font-style: normal; font-weight: 400; line-height: 1.4; z-index: 5; box-shadow: 0 6px 24px rgba(0,0,0,.6); display: none; }
+.info:hover .infobox, .info:focus .infobox { display: block; }
+input[type=range] { width: 100%; accent-color: var(--green); }
+
+/* Advanced settings */
+details.advanced { margin-top: 14px; }
+details > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 700; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::after { content: "+"; font-family: var(--display); font-size: 26px; line-height: 1; color: var(--green); }
+details[open] > summary::after { content: "–"; }
+details.advanced > summary { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; }
+details.advanced[open] > summary { border-color: var(--green); }
+.adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 12px; margin-top: 12px; align-items: start; }
+.adv-grid h3 { font-family: var(--display); font-style: italic; font-size: 24px; font-weight: 700; margin: 0; text-transform: uppercase; }
+.adv-grid label.src { display: grid; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--ink-2); }
+.slider { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin: 12px 0; }
+.slider span { font-size: 13px; color: var(--ink-2); }
+.slider output { font-variant-numeric: tabular-nums; color: var(--green); font-size: 13px; font-weight: 700; text-align: right; }
+.slider input { grid-column: 1 / -1; }
+.tier-row { display: grid; grid-template-columns: 1fr 70px; gap: 8px; align-items: center; margin: 4px 0; font-size: 13px; color: var(--ink-2); }
+.tier-row select { padding: 3px 6px; }
+
+/* Season summary tiles */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px; margin-bottom: 12px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.stat .k { font-size: 12px; color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase; }
+.stat .v { font-family: var(--display); font-size: 34px; font-weight: 700; line-height: 1; margin-top: 6px; }
+.stat:first-child { border-color: var(--green); background: var(--green-tint); }
+.stat:first-child .v { color: var(--green); }
+.stat .d { font-size: 12px; color: var(--dim); margin-top: 4px; }
+.note { font-size: 13px; color: var(--ink-2); background: var(--green-tint); border: 1px solid var(--green-deep); border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; }
+
+/* Tables */
 table { border-collapse: separate; border-spacing: 0; width: 100%; font-variant-numeric: tabular-nums; }
 th, td { padding: 0; text-align: center; white-space: nowrap; }
-thead th {
-  font-size: 12px; font-weight: 600; color: var(--ink-2); padding: 6px 4px;
-  vertical-align: bottom; border-bottom: 1px solid var(--axis); cursor: pointer; user-select: none;
-}
-thead th .w { display: block; font-weight: 500; color: var(--muted); font-size: 11px; }
-thead th.sorted { color: var(--ink); }
 th.left, td.left { text-align: left; }
+thead th { font-size: 12px; font-weight: 700; color: var(--dim); padding: 8px 4px; vertical-align: bottom; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; letter-spacing: .5px; text-transform: uppercase; }
+thead th .w { display: block; font-weight: 700; color: var(--green); font-size: 13px; text-transform: none; }
+thead th.sorted { color: var(--ink); }
 tbody tr { cursor: pointer; }
-tbody tr:hover td.name, tbody tr:hover td.plain { background: var(--row-hover); }
-tbody tr.sel td.name { box-shadow: inset 3px 0 0 var(--accent); }
+tbody tr:hover td.name, tbody tr:hover td.plain { background: var(--panel-2); }
+tbody tr.sel td.name { box-shadow: inset 3px 0 0 var(--green); }
 td.plain { padding: 0 8px; color: var(--ink-2); }
-td.name { padding: 4px 10px 4px 8px; min-width: 190px; }
-td.name b { font-weight: 600; }
-td.name small { display: block; color: var(--muted); font-size: 11px; }
-td.cell { padding: 1px; }
-td.cell div {
-  width: 64px; height: 32px; margin: 0 auto; border-radius: 4px;
-  display: grid; place-items: center; font-size: 12px; font-weight: 600;
-}
-td.cell div.na { color: var(--muted); font-weight: 400; background: transparent; border: 1px dashed var(--grid); }
+td.plain small { color: var(--dim) !important; }
+td.name { padding: 6px 10px 6px 8px; min-width: 190px; }
+td.name b { font-weight: 700; }
+td.name small { display: block; color: var(--dim); font-size: 11px; }
+td.cell { padding: 2px; }
+td.cell div { width: 64px; height: 34px; margin: 0 auto; border-radius: 6px; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+td.cell div.na { color: var(--dim); font-weight: 400; background: transparent; border: 1px dashed var(--line); }
 td.cell div.off { opacity: .35; }
-td.total { padding: 0 8px; min-width: 150px; }
-.bar { display: grid; grid-template-columns: 1fr 34px; align-items: center; gap: 6px; }
-.bar i { display: block; height: 10px; border-radius: 0 4px 4px 0; background: var(--accent); }
-.bar b { font-size: 13px; text-align: right; }
+td.total { padding: 0 8px; min-width: 160px; }
+.bar { display: grid; grid-template-columns: 1fr 40px; align-items: center; gap: 8px; }
+.bar i { display: block; height: 10px; border-radius: 0 4px 4px 0; background: var(--green); }
+.bar b { font-family: var(--display); font-size: 22px; text-align: right; }
 .delta { font-size: 12px; }
-.delta.up { color: var(--ink); }
-.delta.down { color: var(--muted); }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 12px; color: var(--ink-2); margin-top: 10px; }
+.delta.up { color: var(--green); }
+.delta.down { color: var(--dim); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--dim); margin-top: 12px; }
 .ramp { display: inline-flex; border-radius: 4px; overflow: hidden; vertical-align: middle; margin: 0 6px; }
 .ramp i { width: 18px; height: 10px; display: block; }
-.detail h3 { margin: 0 0 2px; font-size: 16px; }
+
+/* Medal table */
+table.medals { width: 100%; }
+table.medals th, table.medals td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); font-size: 14px; cursor: default; }
+table.medals tbody tr { cursor: default; }
+table.medals td:first-child { font-family: var(--display); font-size: 24px; color: var(--dim); }
+table.medals td.first { font-family: var(--display); font-size: 30px; font-weight: 700; color: var(--green); }
+table.medals td.zero { color: #4a4a4a; }
+table.medals .years { display: block; color: var(--dim); font-size: 11px; font-weight: 400; white-space: normal; }
+table.medals tbody tr:first-child td.left b { color: var(--green); }
+
+/* Player breakdown */
+.detail h3 { font-family: var(--display); font-style: italic; font-size: 30px; font-weight: 700; margin: 0; text-transform: uppercase; }
 .detail table { margin-top: 10px; }
-.detail th, .detail td { padding: 5px 8px; font-size: 12px; border-bottom: 1px solid var(--grid); }
-.detail th { color: var(--ink-2); font-weight: 600; cursor: default; }
+.detail th, .detail td { padding: 6px 8px; font-size: 12px; border-bottom: 1px solid var(--line-soft); }
+.detail th { cursor: default; }
 .detail td.left { color: var(--ink); }
-.tierpill { display: inline-block; min-width: 22px; padding: 1px 6px; border-radius: 10px; background: var(--row-hover); color: var(--ink-2); font-size: 11px; }
-#tip {
-  position: fixed; pointer-events: none; z-index: 10; max-width: 280px;
-  background: var(--surface); color: var(--ink); border: 1px solid var(--border);
-  border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.12);
-  display: none;
-}
+.detail .hint { margin-top: 4px; }
+.tierpill { display: inline-block; min-width: 24px; padding: 1px 7px; border-radius: 10px; background: var(--green-deep); color: var(--green); font-size: 11px; font-weight: 700; }
+
+/* Methodology and footer */
+.method p { margin: 10px 0; color: var(--ink-2); font-size: 14px; }
+.method b { color: var(--ink); }
+footer { color: var(--dim); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding-block: 28px 36px; border-top: 1px solid var(--line-soft); margin-top: 28px; }
+footer b { color: var(--green); }
+#tip { position: fixed; pointer-events: none; z-index: 10; max-width: 280px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--green); border-radius: 10px; padding: 8px 10px; font-size: 12px; box-shadow: 0 6px 24px rgba(0,0,0,.6); display: none; }
 #tip b { display: block; margin-bottom: 2px; }
 #tip span { color: var(--ink-2); }
-.method p { margin: 6px 0; color: var(--ink-2); font-size: 13px; }
-.method b { color: var(--ink); }
 </style>
 </head>
 <body>
-<header>
-  <h1>Balón de Oro por datos</h1>
-  <p class="sub">Un modelo que puntúa a los nominados de 0 a 100 solo con datos. Cada factor se pondera por la importancia del torneo (tier) y por la ronda alcanzada. Ajusta los pesos a la izquierda; la matriz se recalcula al instante.</p>
+<header class="top wrap">
+  <div class="brand">Dato Hace Relato</div>
+  <h1>BALÓN DE ORO <span>POR DATOS</span></h1>
+  <p class="subtitle">Modelo propio · FotMob, Sofascore y WhoScored · 2006–2026</p>
+  <p class="lede">Puntuamos a los nominados de 0 a 100 con datos de partido, ponderando cada torneo por su importancia.</p>
+  <nav class="jump" aria-label="Secciones">
+    <a href="#pesos">Pesos</a><a href="#palmares">Palmarés</a><a href="#temporada">Temporada</a><a href="#jugador">Jugador</a><a href="#metodologia">Metodología</a>
+  </nav>
 </header>
 
-<div class="toolbar">
-  <label>Temporada <select id="season"></select></label>
-  <label>Fuente de la nota
-    <select id="source">
-      <option value="comb">FotMob + Sofascore (media)</option>
-      <option value="fm">Solo FotMob</option>
-      <option value="sofa">Solo Sofascore</option>
-    </select>
-  </label>
-  <button id="presetData" class="primary" type="button">Solo datos</button>
-  <button id="presetMix" type="button">Datos + prensa (20%)</button>
-  <button id="reset" type="button">Restablecer todo</button>
-</div>
-
-<div class="layout">
-  <aside>
-    <details class="card" open>
-      <summary>Peso de cada factor</summary>
-      <p class="hint">El porcentaje es la parte del total que aporta cada factor.</p>
+<main class="wrap">
+  <section class="block" id="pesos">
+    <details class="sec" open>
+      <summary><h2>Peso de <span>cada factor</span></h2><button id="reset" type="button" class="in-summary">Restablecer todo</button></summary>
       <div id="weights"></div>
-    </details>
-    <details class="card">
-      <summary>Peso por tier de competición</summary>
-      <p class="hint">Pesa cada competición en las medias de nota y dominio, escala esos valores según la intensidad de abajo y multiplica los títulos.</p>
-      <div id="tiers"></div>
-    </details>
-    <details class="card">
-      <summary>Puntos por ronda y participación</summary>
-      <p class="hint">En ligas: 1º = Campeón, 2º = Final, 3º = Semifinal, 4º = Cuartos, 5º–6º = Octavos, resto = Fase de grupos.</p>
-      <div id="stages"></div>
-    </details>
-    <details class="card">
-      <summary>Reasignar tiers (esta temporada)</summary>
-      <p class="hint">Cambia el tier de cualquier competición; se guarda para todas las temporadas.</p>
-      <div id="compTiers"></div>
-    </details>
-  </aside>
-
-  <main>
-    <section class="card" id="history">
-      <h2 class="sec-title">Palmarés del modelo 2006–2025</h2>
-      <p class="hint">Con los ajustes actuales: cuántas veces termina cada jugador en cada puesto del modelo. Ordenado como un medallero.</p>
-      <div class="scroll"><table class="medals" id="medals"></table></div>
-    </section>
-    <div class="stats" id="stats"></div>
-    <div id="seasonNote" class="note" hidden></div>
-    <section class="card">
-      <div class="scroll"><table id="matrix"></table></div>
-      <div class="legend">
-        <span>Puntuación del factor <span class="ramp" id="rampLegend"></span> 0 → 100 (100 = mejor nominado de la temporada en ese factor)</span>
-        <span>— = sin datos (el factor no cuenta para ese jugador)</span>
-        <span>Δ: puestos que el modelo sube (▲) o baja (▼) frente a la votación</span>
-      </div>
-    </section>
-    <section class="card detail" id="detail"></section>
-    <section class="card method">
-      <details>
-        <summary>Cómo se calcula</summary>
-        <p><b>Rendimiento:</b> cada competición suma lo que el jugador rindió por encima de la nota base: aporte = (nota media por partido − 6,5) × peso del tier × participación. El total es la suma de todas sus competiciones; 100 = el nominado que más sumó. Jugar más torneos a buen nivel siempre suma, y un buen Mundial (×1,0) suma el doble que una buena MLS (×0,5) al mismo nivel. Una nota por debajo de la base resta.</p>
-        <p><b>Dominio posicional:</b> media de los 5 mejores percentiles por 90' de FotMob frente a jugadores de su misma posición (porteros con métricas de portero), en cada competición. Se suma igual que el rendimiento: aporte = (percentil − 50) / 10 × peso del tier × participación. Así un central o un portero puede puntuar alto sin marcar goles. Una competición sin percentiles no suma ni resta.</p>
-        <p><b>Goles + asistencias:</b> los goles y asistencias de cada competición, multiplicados por la fuerza del tier: un gol en el Mundial cuenta 1, en la Champions 0,75, en LaLiga 0,6 y en un amistoso 0,25. 100 = el nominado que más produjo. Favorece a delanteros y mediapuntas; Dominio posicional compensa a las demás posiciones.</p>
-        <p><b>Participación en Rendimiento y Dominio:</b> la misma que en Éxito colectivo (minutos frente al 70% de los posibles). Para clasificatorias y amistosos, cuyo número de partidos no conocemos, la referencia es 3 partidos completos.</p>
-        <p><b>Intensidad del ajuste:</b> mezcla entre sin ajuste (0%, todas las competiciones ×1) y el peso completo del tier (100%). Con el 50%, un tier ×0,5 cuenta ×0,75.</p>
-        <p><b>Éxito colectivo:</b> para cada competición, peso del tier × puntos de la ronda alcanzada × participación del jugador. Ganar un Mundial vale mucho más que una semifinal de Copa del Rey. 100 = el nominado con más éxito de la temporada.</p>
-        <p><b>Participación (multiplicador de impacto):</b> los minutos solo cuentan aquí. Minutos posibles = partidos que jugó su equipo en esa competición × 90. Los partidos salen del formato y de la ronda alcanzada (por ejemplo, campeón del Mundial = 7 partidos, 8 desde 2026; liga = 38 o 34). Participación = mín(1, minutos jugados / (70% de los minutos posibles)). Quien jugó el 70% o más se lleva el 100% del mérito del equipo; quien jugó el 35%, la mitad. El 70% se puede cambiar.</p>
-        <p><b>Voto de la prensa:</b> votos del jugador / votos del ganador × 100. Usa los puntos oficiales de cada edición, o el % de votos en 2010–2015 (Balón de Oro FIFA). Así cuenta la distancia real: un 2º muy cerca del ganador saca casi 100, uno lejos saca mucho menos. En 2020 no hubo votación y se usa el puesto de la lista reconstruida. Por defecto pesa lo mismo que los otros tres factores (25 cada uno); el botón «Solo datos» lo pone a 0.</p>
-        <p><b>Total:</b> media ponderada de los factores con datos. Si a un jugador le falta un factor, su peso se reparte entre los demás.</p>
-        <p>Fuentes: FotMob y Sofascore. Antes de 2015/16 ninguna de las dos tiene notas de liga; para las temporadas 2011/12, 2012/13 y 2013/14 la nota de liga sale de copias archivadas de WhoScored (Wayback Machine, al final de cada temporada), marcada como «WS» en el desglose. Para 2014/15 la nota de liga se estima, marcada como «est.»: el mejor jugador de cada liga recibe la media de la mejor nota de esa liga en 2012–2014, y los miembros del equipo de la temporada reciben la media de las notas conocidas de los equipos de la temporada de 2012–2014. Entre 2006 y 2011 ninguna fuente tiene notas de liga: la liga toma la nota media del propio jugador esa temporada (ponderada por minutos, de las competiciones con nota, sobre todo Champions y torneos de selecciones), marcada como «media». Los minutos marcados con * están estimados (partidos × 75') porque la fuente no los publica para esa competición. El Mundial 2022 (nov–dic 2022) cuenta para el Balón de Oro 2023.</p>
+      <details class="advanced">
+        <summary>Ajustes avanzados: fuentes, tiers, rondas y participación</summary>
+        <div class="adv-grid">
+          <div class="panel">
+            <h3>Peso por tier</h3>
+            <p class="hint">Escala lo que vale cada competición en nota, dominio, goles y títulos.</p>
+            <label class="src">Fuente de la nota
+              <select id="source">
+                <option value="comb">FotMob + Sofascore (media)</option>
+                <option value="fm">Solo FotMob</option>
+                <option value="sofa">Solo Sofascore</option>
+              </select>
+            </label>
+            <div id="tiers"></div>
+          </div>
+          <div class="panel">
+            <h3>Rondas y participación</h3>
+            <p class="hint">En ligas: 1º = Campeón, 2º = Final, 3º = Semifinal, 4º = Cuartos, 5º–6º = Octavos; quedarse en fase de grupos (o 7º o peor en liga) no suma. En finales únicas y torneos de dos rondas (supercopas, Intercontinental, Finalissima, Mundial de Clubes hasta 2024) solo cuenta ganar.</p>
+            <div id="stages"></div>
+          </div>
+          <div class="panel">
+            <h3>Reasignar tiers</h3>
+            <p class="hint">Competiciones de la temporada elegida. El cambio se guarda para todas las temporadas.</p>
+            <div id="compTiers"></div>
+          </div>
+        </div>
       </details>
-    </section>
-  </main>
-</div>
-<div id="tip"></div>
+    </details>
+  </section>
 
+  <section class="block" id="palmares">
+    <details class="sec" open>
+      <summary><h2>Palmarés <span>del modelo</span></h2></summary>
+      <p class="hint">2006–2025 con los pesos actuales: todos los jugadores que el modelo hace ganar al menos un Balón de Oro, con cuántas veces terminan en cada puesto.</p>
+      <div class="panel scroll"><table class="medals" id="medals"></table></div>
+    </details>
+  </section>
+
+  <section class="block" id="temporada">
+    <details class="sec" open>
+      <summary><h2>La <span>temporada</span></h2></summary>
+      <div class="sec-tools">
+        <p class="hint">Cada celda es la puntuación del jugador en ese factor (100 = el mejor nominado del año). Haz clic en un jugador para ver su desglose o en una cabecera para ordenar.</p>
+        <label class="season-pick">Temporada <select id="season"></select></label>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div id="seasonNote" class="note" hidden></div>
+      <div class="panel">
+        <div class="scroll"><table id="matrix"></table></div>
+        <div class="legend">
+          <span>Puntuación <span class="ramp" id="rampLegend"></span> 0 → 100</span>
+          <span>— = sin datos (el factor no cuenta para ese jugador)</span>
+          <span>Δ: puestos que el modelo sube (▲) o baja (▼) frente a la votación</span>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="block" id="jugador">
+    <details class="sec" open>
+      <summary><h2>Desglose <span>del jugador</span></h2></summary>
+      <div class="sec-tools"><label class="season-pick">Jugador <select id="playerPick"></select></label></div>
+      <div class="panel detail" id="detail"></div>
+    </details>
+  </section>
+
+  <section class="block method" id="metodologia">
+    <details class="sec">
+      <summary><h2>Cómo se <span>calcula</span></h2></summary>
+      <div class="panel">
+        <p><b>Rendimiento:</b> cada competición suma lo que el jugador rindió por encima de la nota base: aporte = (nota media por partido − 6,5) × peso del tier × participación. El total es la suma de todas sus competiciones; 100 = el nominado que más sumó. Jugar más torneos a buen nivel siempre suma, y un buen Mundial (×1,0) suma el doble que una buena MLS (×0,5) al mismo nivel. Una nota por debajo de la base resta.</p>
+        <p><b>Dominio posicional:</b> media de los 5 mejores percentiles por 90' de FotMob frente a jugadores de su misma posición (porteros con métricas de portero), en cada competición. Se suma igual que el rendimiento: aporte = (percentil − base) / 10 × peso del tier × participación. Así un central o un portero puede puntuar alto sin marcar goles. Una competición sin percentiles no suma ni resta.</p>
+        <p><b>Goles + asistencias:</b> los goles y asistencias de cada competición, multiplicados por el peso del tier. 100 = el nominado que más produjo. Favorece a delanteros y mediapuntas; Dominio posicional compensa a las demás posiciones.</p>
+        <p><b>Éxito colectivo:</b> para cada competición, peso del tier × puntos de la ronda alcanzada × participación del jugador. Ganar un Mundial vale mucho más que una semifinal de Copa del Rey. En finales únicas y torneos de dos rondas (supercopas, Intercontinental, Finalissima, Mundial de Clubes hasta 2024) solo suma ganar: perder la final o la semifinal da 0, porque llegar ahí se ganó la temporada anterior. 100 = el nominado con más éxito de la temporada.</p>
+        <p><b>Tamaño del torneo (Rendimiento y Dominio):</b> una competición cuenta completa a partir de 6 partidos de su equipo (una Copa América, un Mundial, una liga). Por debajo, en proporción: una final única cuenta 1/6 y la Supercopa de España de 4 equipos 2/6. Así un gran partido en una supercopa no pesa como una temporada entera. El 6 se puede cambiar.</p>
+        <p><b>Participación:</b> minutos posibles = partidos que jugó su equipo en esa competición × 90, según el formato y la ronda alcanzada (campeón del Mundial = 7 partidos, 8 desde 2026; liga = 38 o 34). Participación = mín(1, minutos jugados / (70% de los minutos posibles)). Para clasificatorias y amistosos, la referencia es 3 partidos completos.</p>
+        <p><b>Intensidad del ajuste:</b> mezcla entre sin ajuste (0%, todas las competiciones ×1) y el peso completo del tier (100%).</p>
+        <p><b>Voto de la prensa:</b> votos del jugador / votos del ganador × 100, con los puntos oficiales de cada edición (o el % de votos en 2010–2015). En 2020 no hubo votación y se usa el puesto de la lista reconstruida. Los no nominados sacan 0.</p>
+        <p><b>Total:</b> media ponderada de los factores con datos. Si a un jugador le falta un factor, su peso se reparte entre los demás.</p>
+        <p><b>Notas de liga antes de 2015/16:</b> ni FotMob ni Sofascore las tienen. 2011/12–2013/14 salen de copias archivadas de WhoScored («WS» en el desglose). 2014/15 se estima por los equipos ideales de cada liga («est.»). 2006–2011 usan la nota media del propio jugador esa temporada («media»). Los minutos con * están estimados (partidos × 90') porque la fuente no los publica para esa competición. El Mundial 2022 (nov–dic) cuenta para el Balón de Oro 2023.</p>
+      </div>
+    </details>
+  </section>
+</main>
+<footer class="wrap"><b>Dato Hace Relato</b> · Fuentes: FotMob, Sofascore, WhoScored (Wayback Machine) y votaciones oficiales del Balón de Oro</footer>
+<div id="tip"></div>
 <script src="data.js"></script>
 <script>
 const DATA = window.BDO_DATA;
 
 const FACTORS = [
-  { id: "rend", label: "Rendimiento", short: "Rendim.", kind: "ratio", def: 50 },
-  { id: "dom", label: "Dominio posicional", short: "Dominio", kind: "ratio", def: 10 },
-  { id: "prod", label: "Goles + asistencias", short: "G+A", kind: "ratio", def: 5 },
-  { id: "exito", label: "Éxito colectivo", short: "Éxito", kind: "ratio", def: 25 },
+  { id: "rend", label: "Rendimiento", short: "Rendim.", kind: "ratio", def: 45 },
+  { id: "dom", label: "Dominio posicional", short: "Dominio", kind: "ratio", def: 15 },
+  { id: "prod", label: "Goles + asistencias", short: "G+A", kind: "ratio", def: 10 },
+  { id: "exito", label: "Éxito colectivo", short: "Éxito", kind: "ratio", def: 20 },
   { id: "voto", label: "Voto de la prensa", short: "Prensa", kind: "raw", def: 10 },
 ];
 const TIERS = [
@@ -254,9 +293,9 @@ const TIERS = [
   { t: 2, label: "Tier 2 · Eurocopa, Champions", def: 0.7 },
   { t: 3, label: "Tier 3 · Premier League, LaLiga, Copa América", def: 0.6 },
   { t: 4, label: "Tier 4 · Bundesliga, Serie A, Ligue 1, Europa League", def: 0.5 },
-  { t: 5, label: "Tier 5 · Copas top-5 (salvo Inglaterra, y Francia hasta 2020), ligas 2º nivel, Mundial de Clubes 2025, Copa Libertadores, torneos de otras confederaciones", def: 0.4 },
-  { t: 6, label: "Tier 6 · FA Cup, Coupe de France hasta 2020, copas 2º nivel, otras ligas, Nations League", def: 0.3 },
-  { t: 7, label: "Tier 7 · EFL Cup, Coupe de la Ligue, supercopas, Intercontinental, finales únicas, Mundial de Clubes hasta 2024, clasificatorias y amistosos", def: 0.2 },
+  { t: 5, label: "Tier 5 · Copas top-5 (salvo Inglaterra, y Francia hasta 2020), ligas 2º nivel, Mundial de Clubes, Intercontinental, Supercopa de España, Community Shield, Copa Libertadores, torneos de otras confederaciones", def: 0.4 },
+  { t: 6, label: "Tier 6 · FA Cup, Coupe de France hasta 2020, copas 2º nivel, otras ligas, Nations League, Supercopa de Europa y demás supercopas", def: 0.3 },
+  { t: 7, label: "Tier 7 · EFL Cup, Coupe de la Ligue, Finalissima y otras finales únicas, clasificatorias y amistosos", def: 0.2 },
 ];
 const STAGES = [
   { s: "W", label: "Campeón", def: 100 },
@@ -265,9 +304,10 @@ const STAGES = [
   { s: "QF", label: "Cuartos", def: 30 },
   { s: "R16", label: "Octavos", def: 18 },
   { s: "R32", label: "Dieciseisavos", def: 12 },
-  { s: "G", label: "Fase de grupos", def: 6 },
 ];
-const STAGE_LABEL = Object.fromEntries(STAGES.map(s => [s.s, s.label]));
+// Going out in the group stage (or finishing 7th or lower in a league) earns
+// nothing, so it has no slider and scores 0.
+const STAGE_LABEL = { ...Object.fromEntries(STAGES.map(s => [s.s, s.label])), G: "Fase de grupos" };
 // Matches the team played in a competition, from the round it reached.
 // Teams that lose a semifinal usually still play a third-place match where one exists.
 const byRound = (st, counts) => counts[st] ?? null;
@@ -313,8 +353,15 @@ function teamMatches(r) {
 const possibleMin = r => { const n = teamMatches(r); return n ? n * 90 : null; };
 
 // Sequential blue ramp (reference palette), light → dark for magnitude.
-const RAMP = ["#cde2fb", "#b7d3f6", "#9ec5f4", "#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab", "#184f95", "#104281", "#0d366b"];
-const RAMP_DARK = [...RAMP].reverse();
+// Sequential green on the black background: near-black (low) to the brand green (high).
+const RAMP = ["#0f1913", "#11281b", "#123722", "#13472a", "#135832", "#126a3a", "#0f7d43", "#0b914c", "#06a656", "#02bc60", "#00D26A"];
+const FACTOR_DESC = {
+  rend: "Nota de cada partido por encima de lo normal, según la importancia del torneo.",
+  dom: "Mejores métricas frente a jugadores de su misma posición.",
+  prod: "Goles y asistencias, más valiosos en torneos grandes.",
+  exito: "Títulos y rondas alcanzadas, según los minutos jugados.",
+  voto: "Votos reales de la prensa en el Balón de Oro.",
+};
 
 const STORE_KEY = "bdo-model-v5";
 // Older settings carry over, except tier values and overrides: tiers were renumbered (1-7 since v5).
@@ -324,7 +371,7 @@ const state = {
   weights: Object.fromEntries(FACTORS.map(f => [f.id, f.def])),
   tiers: Object.fromEntries(TIERS.map(t => [t.t, t.def])),
   stages: Object.fromEntries(STAGES.map(s => [s.s, s.def])),
-  tierOverride: {}, threshold: 70, intensity: 100, rBase: 6.5, dBase: 65,
+  tierOverride: {}, threshold: 70, intensity: 100, rBase: 6.5, dBase: 65, sizeRef: 6,
 };
 try {
   let saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
@@ -333,12 +380,12 @@ try {
     saved = JSON.parse(localStorage.getItem(k) || "null");
     if (saved) { delete saved.tiers; delete saved.tierOverride; }
   }
-  if (saved) for (const k of ["source", "weights", "tiers", "stages", "tierOverride", "season", "threshold", "intensity", "rBase", "dBase"]) if (saved[k] != null) state[k] = typeof saved[k] === "object" ? { ...state[k], ...saved[k] } : saved[k];
+  if (saved) for (const k of ["source", "weights", "tiers", "stages", "tierOverride", "season", "threshold", "intensity", "rBase", "dBase", "sizeRef"]) if (saved[k] != null) state[k] = typeof saved[k] === "object" ? { ...state[k], ...saved[k] } : saved[k];
 } catch (e) { /* storage unavailable: defaults are fine */ }
 function persist() {
   try {
-    const { source, weights, tiers, stages, tierOverride, season, threshold, intensity, rBase, dBase } = state;
-    localStorage.setItem(STORE_KEY, JSON.stringify({ source, weights, tiers, stages, tierOverride, season, threshold, intensity, rBase, dBase }));
+    const { source, weights, tiers, stages, tierOverride, season, threshold, intensity, rBase, dBase, sizeRef } = state;
+    localStorage.setItem(STORE_KEY, JSON.stringify({ source, weights, tiers, stages, tierOverride, season, threshold, intensity, rBase, dBase, sizeRef }));
   } catch (e) { /* ignore */ }
 }
 
@@ -390,7 +437,11 @@ function participation(r) {
   if (!possible) return 0;
   return Math.min(1, (r.min || 0) / (possible * state.threshold / 100));
 }
-const stagePts = r => (r.st ? state.stages[r.st] : 0);
+// One-off finals and two-round tournaments (super cups, Intercontinental,
+// Finalissima, the pre-2025 Club World Cup) only count when won: reaching
+// them is earned the season before, not in this one.
+const onlyWinCounts = r => r.k === "final" || (r.c === "Mundial de Clubes" && r.y < 2025);
+const stagePts = r => !r.st || r.st === "G" ? 0 : onlyWinCounts(r) && r.st !== "W" ? 0 : (state.stages[r.st] ?? 0);
 // Competition strength: the tier weight, blended with "no adjustment" by the
 // intensity slider (0% = every competition ×1, 100% = full tier weight).
 const strength = r => 1 - (state.intensity / 100) * (1 - tw(r));
@@ -401,8 +452,16 @@ const presence = r => possibleMin(r) ? participation(r) : Math.min(1, (r.min || 
 // (FotMob/Sofascore ratings and per-90 percentiles are already per match),
 // times the competition's strength and the player's presence in it. More good
 // competitions add more; a World Cup adds more than an MLS at the same level.
-function rendContrib(r) { const v = ratingOf(r); return v == null || !r.min ? null : (v - state.rBase) * strength(r) * presence(r); }
-function domContrib(r) { return r.dom == null || !r.min ? null : (r.dom - state.dBase) / 10 * strength(r) * presence(r); }
+// Tournament size: a competition counts in full from 6 team matches (a Copa
+// América), and in proportion below that (a one-off final = 1/6), so a single
+// great super cup match can't weigh like a whole league. Without a known team
+// match count (qualifiers, friendlies), the player's own matches stand in.
+function compSize(r) {
+  const n = teamMatches(r) ?? r.apps ?? (r.min || 0) / 90;
+  return Math.min(1, n / state.sizeRef);
+}
+function rendContrib(r) { const v = ratingOf(r); return v == null || !r.min ? null : (v - state.rBase) * strength(r) * presence(r) * compSize(r); }
+function domContrib(r) { return r.dom == null || !r.min ? null : (r.dom - state.dBase) / 10 * strength(r) * presence(r) * compSize(r); }
 // Goals + assists are already a season total, so each competition adds them
 // scaled only by its strength: a World Cup goal ×1, a tier-7 goal ×0.25.
 function prodContrib(r) { return r.g == null && r.a == null ? null : ((r.g || 0) + (r.a || 0)) * strength(r); }
@@ -469,15 +528,9 @@ const byTotal = (a, b) => (b.total ?? -1) - (a.total ?? -1);
 // ---------- rendering ----------
 const $ = s => document.querySelector(s);
 const fmt = (v, d = 0) => v == null ? "—" : v.toLocaleString("es-ES", { maximumFractionDigits: d, minimumFractionDigits: d });
-const isDark = () => {
-  const t = document.documentElement.dataset.theme;
-  return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-};
 function cellStyle(v) {
-  const ramp = isDark() ? RAMP_DARK : RAMP;
-  const i = Math.min(ramp.length - 1, Math.floor(v / 100 * ramp.length));
-  const strong = isDark() ? i <= 5 : i >= 6;
-  return `background:${ramp[i]};color:${strong ? "#fff" : "#0b0b0b"}`;
+  const i = Math.min(RAMP.length - 1, Math.floor(v / 100 * RAMP.length));
+  return `background:${RAMP[i]};color:${i >= 7 ? "#080808" : "#ffffff"}`;
 }
 
 function buildControls() {
@@ -489,8 +542,17 @@ function buildControls() {
   $("#source").value = state.source;
 
   $("#weights").innerHTML = FACTORS.map(f => `
-    <label class="slider"><span>${f.label}</span><output id="w-${f.id}-o"></output>
-      <input type="range" min="0" max="100" step="5" id="w-${f.id}" value="${state.weights[f.id]}"></label>`).join("");
+    <div class="wcard">
+      <div class="wtop">
+        <label class="wname" for="w-${f.id}">${f.label}</label>
+        <span class="info" tabindex="0" role="button" aria-label="Qué mide ${f.label}">i<span class="infobox" role="tooltip">${FACTOR_DESC[f.id]}</span></span>
+        <output id="w-${f.id}-o" for="w-${f.id}"></output>
+      </div>
+      <div class="wslider">
+        <input type="range" min="0" max="100" step="5" id="w-${f.id}" value="${state.weights[f.id]}" aria-label="Peso de ${f.label}">
+        <span class="wpts" id="w-${f.id}-pts"></span>
+      </div>
+    </div>`).join("");
   $("#tiers").innerHTML = TIERS.map(t => `
     <label class="slider"><span>${t.label}</span><output id="t-${t.t}-o"></output>
       <input type="range" min="0" max="1" step="0.05" id="t-${t.t}" value="${state.tiers[t.t]}"></label>`).join("") + `
@@ -500,7 +562,11 @@ function buildControls() {
     <label class="slider"><span>Nota base (por encima suma, por debajo resta)</span><output id="rb-o"></output>
       <input type="range" min="6" max="7.5" step="0.1" id="rb" value="${state.rBase}"></label>
     <label class="slider"><span>Percentil base de Dominio</span><output id="db-o"></output>
-      <input type="range" min="30" max="80" step="5" id="db" value="${state.dBase}"></label>`;
+      <input type="range" min="30" max="80" step="5" id="db" value="${state.dBase}"></label>
+    <label class="slider"><span>Partidos para que un torneo cuente completo</span><output id="sz-o"></output>
+      <input type="range" min="1" max="15" step="1" id="sz" value="${state.sizeRef}"></label>
+    <p class="hint">En Rendimiento y Dominio, un torneo con menos partidos cuenta en proporción (1 partido de 6 = ×0,17).</p>`;
+  $("#sz").addEventListener("input", e => { state.sizeRef = +e.target.value; update(); });
   $("#int").addEventListener("input", e => { state.intensity = +e.target.value; update(); });
   $("#rb").addEventListener("input", e => { state.rBase = +e.target.value; update(); });
   $("#db").addEventListener("input", e => { state.dBase = +e.target.value; update(); });
@@ -516,17 +582,13 @@ function buildControls() {
   for (const s of STAGES) $(`#s-${s.s}`).addEventListener("input", e => { state.stages[s.s] = +e.target.value; update(); });
   $("#season").addEventListener("change", e => { state.season = +e.target.value; state.selected = null; update(); });
   $("#source").addEventListener("change", e => { state.source = e.target.value; update(); });
-  $("#presetData").addEventListener("click", () => { state.weights.voto = 0; syncInputs(); update(); });
-  $("#presetMix").addEventListener("click", () => {
-    const others = FACTORS.filter(f => f.id !== "voto").reduce((a, f) => a + state.weights[f.id], 0);
-    state.weights.voto = Math.round(others * 0.25 / 5) * 5; // 20% of the new total
-    syncInputs(); update();
-  });
-  $("#reset").addEventListener("click", () => {
+  $("#playerPick").addEventListener("change", e => { state.selected = e.target.value; update(); });
+  $("#reset").addEventListener("click", e => {
+    e.preventDefault();
     for (const f of FACTORS) state.weights[f.id] = f.def;
     for (const t of TIERS) state.tiers[t.t] = t.def;
     for (const s of STAGES) state.stages[s.s] = s.def;
-    state.tierOverride = {}; state.threshold = 70; state.intensity = 100; state.rBase = 6.5; state.dBase = 65; state.source = "comb"; $("#source").value = "comb";
+    state.tierOverride = {}; state.threshold = 70; state.intensity = 100; state.rBase = 6.5; state.dBase = 65; state.sizeRef = 6; state.source = "comb"; $("#source").value = "comb";
     syncInputs(); update();
   });
   $("#rampLegend").innerHTML = RAMP.filter((_, i) => i % 2 === 0).map(c => `<i style="background:${c}"></i>`).join("");
@@ -538,16 +600,23 @@ function syncInputs() {
   $("#thr").value = state.threshold;
   $("#int").value = state.intensity;
   $("#rb").value = state.rBase;
-  $("#db").value = state.dBase;}
+  $("#db").value = state.dBase;
+  $("#sz").value = state.sizeRef;}
 function renderOutputs() {
   const total = FACTORS.reduce((a, f) => a + state.weights[f.id], 0) || 1;
-  for (const f of FACTORS) $(`#w-${f.id}-o`).innerHTML = `${state.weights[f.id]} · <span class="share">${fmt(100 * state.weights[f.id] / total)}%</span>`;
+  for (const f of FACTORS) {
+    const pts = $(`#w-${f.id}-pts`);
+    pts.textContent = state.weights[f.id];
+    pts.style.setProperty("--p", state.weights[f.id] / 100);
+    $(`#w-${f.id}-o`).textContent = fmt(100 * state.weights[f.id] / total) + "%";
+  }
   for (const t of TIERS) $(`#t-${t.t}-o`).textContent = "×" + fmt(state.tiers[t.t], 2);
   for (const s of STAGES) $(`#s-${s.s}-o`).textContent = state.stages[s.s] + " pts";
   $("#thr-o").textContent = state.threshold + "%";
   $("#int-o").textContent = state.intensity + "%";
   $("#rb-o").textContent = fmt(state.rBase, 1);
-  $("#db-o").textContent = state.dBase;}
+  $("#db-o").textContent = state.dBase;
+  $("#sz-o").textContent = state.sizeRef;}
 
 function renderCompTiers() {
   const comps = new Map();
@@ -651,7 +720,10 @@ function renderMatrix(list) {
 }
 
 function renderDetail(list) {
-  const x = list.find(x => x.p === state.selected) || [...list].sort(byTotal)[0];
+  const ranked = [...list].sort(byTotal);
+  const x = list.find(x => x.p === state.selected) || ranked[0];
+  $("#playerPick").innerHTML = ranked.map(p =>
+    `<option value="${p.p.replace(/"/g, "&quot;")}" ${p === x ? "selected" : ""}>${p.modelRank ? p.modelRank + ". " : ""}${p.p}</option>`).join("");
   if (!x) { $("#detail").innerHTML = ""; return; }
   const rows = (rowsBySeasonPlayer.get(x.y + "|" + x.p) || []).slice()
     .sort((a, b) => tierOf(a) - tierOf(b) || (b.min || 0) - (a.min || 0));
@@ -660,11 +732,11 @@ function renderDetail(list) {
     <h3>${x.p} — ${state.season}</h3>
     <div class="hint">Modelo: ${x.noData ? "sin datos de partidos en las fuentes" : `${x.modelRank}º (${fmt(x.total, 1)} pts)`} · Votación: ${x.rank != null ? x.rank + "º" : x.extra ? "no nominado (añadido para comparar)" : "—"}. Haz clic en otro jugador de la matriz para ver su desglose.</div>
     <div class="scroll"><table>
-      <thead><tr><th class="left">Competición</th><th>Tier</th><th>Peso</th><th>Minutos</th><th>Min. posibles</th><th>Participación</th><th>Nota</th><th>Aporte rend.</th><th>Dominio</th><th>Aporte dom.</th><th>G / A</th><th>Aporte G+A</th><th>Ronda / puesto</th><th>Aporte a éxito</th></tr></thead>
+      <thead><tr><th class="left">Competición</th><th>Tier</th><th>Peso</th><th>Minutos</th><th>Min. posibles</th><th>Participación</th><th>Tamaño</th><th>Nota</th><th>Aporte rend.</th><th>Dominio</th><th>Aporte dom.</th><th>G / A</th><th>Aporte G+A</th><th>Ronda / puesto</th><th>Aporte a éxito</th></tr></thead>
       <tbody>${rows.map(r => `<tr>
         <td class="left">${r.c}</td><td><span class="tierpill">T${tierOf(r)}</span></td><td>×${fmt(tw(r), 2)}</td>
         <td>${fmt(r.min)}${r.est ? "*" : ""}</td><td>${possibleMin(r) ? fmt(possibleMin(r)) + ` <span class="hint">(${teamMatches(r)} p.)</span>` : "—"}</td>
-        <td>${fmt(100 * presence(r))}%</td><td>${fmt(ratingOf(r), 2)}${ratingFromWhoScored(r) ? ` <span class="hint">${r.rwe ? "est." : "WS"}</span>` : isImputed(r) && ratingOf(r) != null ? ' <span class="hint">media</span>' : ""}</td><td>${fmt(rendContrib(r), 2)}</td>
+        <td>${fmt(100 * presence(r))}%</td><td>×${fmt(compSize(r), 2)}</td><td>${fmt(ratingOf(r), 2)}${ratingFromWhoScored(r) ? ` <span class="hint">${r.rwe ? "est." : "WS"}</span>` : isImputed(r) && ratingOf(r) != null ? ' <span class="hint">media</span>' : ""}</td><td>${fmt(rendContrib(r), 2)}</td>
         <td>${fmt(r.dom)}</td><td>${fmt(domContrib(r), 2)}</td>
         <td>${r.g == null && r.a == null ? "—" : `${fmt(r.g ?? 0)} / ${fmt(r.a ?? 0)}`}</td><td>${fmt(prodContrib(r), 1)}</td><td>${r.st ? STAGE_LABEL[r.st] : "—"}</td><td>${fmt(exitoOf(r), 1)}</td></tr>`).join("")}</tbody>
     </table></div>`;
@@ -699,7 +771,7 @@ function renderHistory() {
     }
   }
   const top = [...tally.values()].sort((a, b) =>
-    b.gold - a.gold || b.silver - a.silver || b.bronze - a.bronze || b.top5 - a.top5 || b.top10 - a.top10).slice(0, 5);
+    b.gold - a.gold || b.silver - a.silver || b.bronze - a.bronze || b.top5 - a.top5 || b.top10 - a.top10).filter(t => t.gold > 0);
   const cell = (v, first) => `<td class="${v === 0 ? "zero" : first ? "first" : ""}">${v}</td>`;
   $("#medals").innerHTML = `<thead><tr><th>#</th><th class="left">Jugador</th><th>Balón de Oro</th><th>Plata (2º)</th><th>Bronce (3º)</th><th>4º–5º</th><th>6º–10º</th></tr></thead>
     <tbody>${top.map((t, i) => `<tr><td>${i + 1}</td><td class="left"><b>${t.p}</b>${t.golds.length ? `<span class="years">${t.golds.join(", ")}</span>` : ""}</td>
@@ -718,7 +790,6 @@ function update() {
 }
 buildControls();
 update();
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", update);
 </script>
 </body>
 </html>
