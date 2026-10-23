@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Balón de Oro por datos</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap">
@@ -50,6 +51,9 @@ a { color: var(--gold); }
 .top { padding-block: 32px 8px; }
 .brand { font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink); font-weight: 700; }
 .brand span { color: var(--dim); font-weight: 500; }
+.title-row { display: flex; align-items: center; gap: clamp(14px, 2.5vw, 28px); }
+.title-row h1 { margin: 0; }
+.logo { width: clamp(84px, 14vw, 150px); height: auto; aspect-ratio: 1; flex: none; border-radius: 50%; }
 h1 { font-family: var(--display); font-style: italic; font-weight: 700; text-transform: uppercase; font-size: clamp(36px, 6.4vw, 64px); line-height: 1.02; margin: 12px 0 0; letter-spacing: .2px; text-wrap: balance; }
 h1 span { color: var(--gold); }
 .lede { color: var(--ink-2); font-size: 17px; margin: 12px 0 0; max-width: 62ch; }
@@ -209,9 +213,7 @@ footer b { color: var(--ink); }
 </head>
 <body>
 <header class="top wrap">
-  <div class="brand">Dato Hace Relato <span>/ Investigación</span></div>
-  <h1>¿Quién merecía el <span>Balón de Oro</span>?</h1>
-  <p class="lede">La historia dice quién ganó. Los datos nos permiten discutir quién debió ganar.</p>
+  <div class="title-row"><img class="logo" src="logo-dhr.webp" alt="Dato Hace Relato" width="150" height="150"><h1>¿Quién merecía el <span>Balón de Oro</span>?</h1></div>
   <p class="subtitle">Modelo propio · FotMob, Sofascore y WhoScored · 2006–2026</p>
   <nav class="jump" aria-label="Secciones">
     <a href="#pesos">Pesos</a><a href="#palmares">Palmarés</a><a href="#temporada">Temporada</a><a href="#jugador">Jugador</a><a href="#metodologia">Metodología</a>
@@ -240,7 +242,7 @@ footer b { color: var(--ink); }
           </div>
           <div class="panel">
             <h3>Rondas y participación</h3>
-            <p class="hint">En ligas: 1º = Campeón, 2º = Final, 3º = Semifinal, 4º = Cuartos, 5º–6º = Octavos; quedarse en fase de grupos (o 7º o peor en liga) no suma. En finales únicas y torneos de dos rondas (supercopas, Intercontinental, Finalissima, Mundial de Clubes hasta 2024) solo cuenta ganar.</p>
+            <p class="hint">En ligas: 1º = Campeón, 2º = Final, 3º–4º = Semifinal, 5º–6º = Cuartos; quedarse en fase de grupos (o 7º o peor en liga) no suma, y en copas nacionales solo suman semifinal, final y título. En finales únicas y torneos de dos rondas (supercopas, Intercontinental, Finalissima, Mundial de Clubes hasta 2024) solo cuenta ganar.</p>
             <div id="stages"></div>
           </div>
           <div class="panel">
@@ -256,7 +258,7 @@ footer b { color: var(--ink); }
   <section class="block" id="palmares">
     <details class="sec" open>
       <summary><div><span class="kicker"><b>02</b>Análisis histórico</span><h2>Palmarés del modelo</h2></div></summary>
-      <p class="hint">2006–2025 con los pesos actuales: todos los jugadores que el modelo hace ganar al menos un Balón de Oro, con cuántas veces terminan en cada puesto.</p>
+      <p class="hint">2006–2026 con los pesos actuales (2026 aún sin votación de la prensa): todos los jugadores que el modelo hace ganar al menos un Balón de Oro, con cuántas veces terminan en cada puesto.</p>
       <div class="panel scroll"><table class="medals" id="medals"></table></div>
     </details>
   </section>
@@ -297,13 +299,13 @@ footer b { color: var(--ink); }
         <p><b>Rendimiento:</b> cada competición suma lo que el jugador rindió por encima de la nota base: aporte = (nota media por partido − 6,5) × peso del tier × participación. El total es la suma de todas sus competiciones; 100 = el nominado que más sumó. Jugar más torneos a buen nivel siempre suma, y un buen Mundial (×1,0) suma el doble que una buena MLS (×0,5) al mismo nivel. Una nota por debajo de la base resta.</p>
         <p><b>Dominio posicional:</b> media de los 5 mejores percentiles por 90' de FotMob frente a jugadores de su misma posición (porteros con métricas de portero), en cada competición. Se suma igual que el rendimiento: aporte = (percentil − base) / 10 × peso del tier × participación. Así un central o un portero puede puntuar alto sin marcar goles. Una competición sin percentiles no suma ni resta.</p>
         <p><b>Goles + asistencias:</b> los goles y asistencias de cada competición, multiplicados por el peso del tier. 100 = el nominado que más produjo. Favorece a delanteros y mediapuntas; Dominio posicional compensa a las demás posiciones.</p>
-        <p><b>Éxito colectivo:</b> para cada competición, peso del tier × puntos de la ronda alcanzada × participación del jugador. Ganar un Mundial vale mucho más que una semifinal de Copa del Rey. En finales únicas y torneos de dos rondas (supercopas, Intercontinental, Finalissima, Mundial de Clubes hasta 2024) solo suma ganar: perder la final o la semifinal da 0, porque llegar ahí se ganó la temporada anterior. 100 = el nominado con más éxito de la temporada.</p>
+        <p><b>Éxito colectivo:</b> para cada competición, peso del tier × puntos de la ronda alcanzada × participación del jugador. Ganar un Mundial vale mucho más que una semifinal de Copa del Rey. En las copas nacionales solo suma llegar a semifinales o más: caer antes da 0. En finales únicas y torneos de dos rondas (supercopas, Intercontinental, Finalissima, Mundial de Clubes hasta 2024) solo suma ganar: perder la final o la semifinal da 0, porque llegar ahí se ganó la temporada anterior. 100 = el nominado con más éxito de la temporada.</p>
         <p><b>Tamaño del torneo (Rendimiento y Dominio):</b> una competición cuenta completa a partir de 6 partidos de su equipo (una Copa América, un Mundial, una liga). Por debajo, en proporción: una final única cuenta 1/6 y la Supercopa de España de 4 equipos 2/6. Así un gran partido en una supercopa no pesa como una temporada entera. El 6 se puede cambiar.</p>
         <p><b>Participación:</b> minutos posibles = partidos que jugó su equipo en esa competición × 90, según el formato y la ronda alcanzada (campeón del Mundial = 7 partidos, 8 desde 2026; liga = 38 o 34). Participación = mín(1, minutos jugados / (70% de los minutos posibles)). Para clasificatorias y amistosos, la referencia es 3 partidos completos.</p>
         <p><b>Intensidad del ajuste:</b> mezcla entre sin ajuste (0%, todas las competiciones ×1) y el peso completo del tier (100%).</p>
         <p><b>Voto de la prensa:</b> votos del jugador / votos del ganador × 100, con los puntos oficiales de cada edición (o el % de votos en 2010–2015). En 2020 no hubo votación y se usa el puesto de la lista reconstruida. Los no nominados sacan 0.</p>
         <p><b>Total:</b> media ponderada de los factores con datos. Si a un jugador le falta un factor, su peso se reparte entre los demás.</p>
-        <p><b>Notas de liga antes de 2015/16:</b> ni FotMob ni Sofascore las tienen. 2011/12–2013/14 salen de copias archivadas de WhoScored («WS» en el desglose). 2014/15 se estima por los equipos ideales de cada liga («est.»). 2006–2011 usan la nota media del propio jugador esa temporada («media»). Los minutos con * están estimados (partidos × 90') porque la fuente no los publica para esa competición. El Mundial 2022 (nov–dic) cuenta para el Balón de Oro 2023.</p>
+        <p><b>Notas de liga antes de 2015/16:</b> ni FotMob ni Sofascore las tienen. 2011/12–2013/14 salen de copias archivadas de WhoScored («WS» en el desglose). 2014/15 se estima por los equipos ideales de cada liga («est.»). En 2006–2011 se usan los premios de cada liga: el mejor jugador (PFA, UNFP, LFP, Oscar del Calcio) recibe 7,87 («mejor liga») y los miembros del equipo ideal o los premiados por posición (PFA, UNFP, LFP, Don Balón, AIC) 7,37 («equipo ideal»), el mismo valor en todas las ligas. El resto recibe el menor valor entre la nota del equipo ideal y su media propia de la temporada («tope ideal» o «media»); lo mismo para los nominados de 2014/15 fuera del equipo ideal. La Bundesliga 2006–2011 y las ligas fuera del top 5 usan la media propia del jugador («media»). Los minutos con * están estimados (partidos × 90') porque la fuente no los publica para esa competición. El Mundial 2022 (nov–dic) cuenta para el Balón de Oro 2023.</p>
       </div>
     </details>
   </section>
@@ -315,17 +317,17 @@ footer b { color: var(--ink); }
 const DATA = window.BDO_DATA;
 
 const FACTORS = [
-  { id: "rend", label: "Rendimiento", short: "Rendim.", kind: "ratio", def: 45 },
-  { id: "dom", label: "Dominio posicional", short: "Dominio", kind: "ratio", def: 15 },
+  { id: "rend", label: "Rendimiento", short: "Rendim.", kind: "ratio", def: 40 },
+  { id: "dom", label: "Dominio posicional", short: "Dominio", kind: "ratio", def: 10 },
   { id: "prod", label: "Goles + asistencias", short: "G+A", kind: "ratio", def: 10 },
-  { id: "exito", label: "Éxito colectivo", short: "Éxito", kind: "ratio", def: 20 },
+  { id: "exito", label: "Éxito colectivo", short: "Éxito", kind: "ratio", def: 30 },
   { id: "voto", label: "Voto de la prensa", short: "Prensa", kind: "raw", def: 10 },
 ];
 const TIERS = [
   { t: 1, label: "Tier 1 · Mundial", def: 1.0 },
   { t: 2, label: "Tier 2 · Eurocopa, Champions", def: 0.7 },
-  { t: 3, label: "Tier 3 · Premier League, LaLiga, Copa América", def: 0.6 },
-  { t: 4, label: "Tier 4 · Bundesliga, Serie A, Ligue 1, Europa League", def: 0.5 },
+  { t: 3, label: "Tier 3 · Premier League, LaLiga, Copa América, Serie A hasta 2009/10", def: 0.6 },
+  { t: 4, label: "Tier 4 · Bundesliga, Serie A desde 2010/11, Ligue 1, Europa League", def: 0.5 },
   { t: 5, label: "Tier 5 · Copas top-5 (salvo Inglaterra, y Francia hasta 2020), ligas 2º nivel, Mundial de Clubes, Intercontinental, Supercopa de España, Community Shield, Copa Libertadores, torneos de otras confederaciones", def: 0.4 },
   { t: 6, label: "Tier 6 · FA Cup, Coupe de France hasta 2020, copas 2º nivel, otras ligas, Nations League, Supercopa de Europa y demás supercopas", def: 0.3 },
   { t: 7, label: "Tier 7 · EFL Cup, Coupe de la Ligue, Finalissima y otras finales únicas, clasificatorias y amistosos", def: 0.2 },
@@ -458,9 +460,28 @@ function seasonAvg(y, p) {
   return seasonAvgCache.get(key);
 }
 const isImputed = r => sourceRating(r) == null && r.k === "liga" && r.y >= IMPUTE_YEARS[0] && r.y <= IMPUTE_YEARS[1] && r.min > 0;
+// Unrated league seasons covered by the league's awards (2006-2011, 2015):
+// best player and team-of-the-season members take the reference value; anyone
+// else takes the lower of the team-of-the-season value and his own average.
+function xiRating(r) {
+  if (!r.xk) return null;
+  if (r.xk !== "cap") return r.xr;
+  const a = seasonAvg(r.y, r.p);
+  return a == null ? r.xr : Math.min(r.xr, a);
+}
+function ratingTag(r) {
+  if (ratingFromWhoScored(r)) return r.rwe ? "est." : "WS";
+  if (sourceRating(r) != null) return "";
+  if (r.xk === "best") return "mejor liga";
+  if (r.xk === "xi") return "equipo ideal";
+  if (r.xk === "cap") return xiRating(r) < r.xr ? "media" : "tope ideal";
+  return isImputed(r) && ratingOf(r) != null ? "media" : "";
+}
 function ratingOf(r) {
   const v = sourceRating(r);
-  return v != null ? v : isImputed(r) ? seasonAvg(r.y, r.p) : null;
+  if (v != null) return v;
+  if (r.xk) return xiRating(r);
+  return isImputed(r) ? seasonAvg(r.y, r.p) : null;
 }
 const ratingFromWhoScored = r => r.rw != null && sourceRating(r) === r.rw && r.rf == null && r.rs == null;
 // Share of the team's minutes the player played; at or above the threshold
@@ -474,7 +495,10 @@ function participation(r) {
 // Finalissima, the pre-2025 Club World Cup) only count when won: reaching
 // them is earned the season before, not in this one.
 const onlyWinCounts = r => r.k === "final" || (r.c === "Mundial de Clubes" && r.y < 2025);
-const stagePts = r => !r.st || r.st === "G" ? 0 : onlyWinCounts(r) && r.st !== "W" ? 0 : (state.stages[r.st] ?? 0);
+// Domestic cups only score from the semi-finals on.
+const CUP_SCORING = new Set(["W", "F", "SF"]);
+const stagePts = r => !r.st || r.st === "G" ? 0 : onlyWinCounts(r) && r.st !== "W" ? 0
+  : r.k === "copa" && !CUP_SCORING.has(r.st) ? 0 : (state.stages[r.st] ?? 0);
 // Competition strength: the tier weight, blended with "no adjustment" by the
 // intensity slider (0% = every competition ×1, 100% = full tier weight).
 const strength = r => 1 - (state.intensity / 100) * (1 - tw(r));
@@ -769,7 +793,7 @@ function renderDetail(list) {
       <tbody>${rows.map(r => `<tr>
         <td class="left">${r.c}</td><td><span class="tierpill">T${tierOf(r)}</span></td><td>×${fmt(tw(r), 2)}</td>
         <td>${fmt(r.min)}${r.est ? "*" : ""}</td><td>${possibleMin(r) ? fmt(possibleMin(r)) + ` <span class="hint">(${teamMatches(r)} p.)</span>` : "—"}</td>
-        <td>${fmt(100 * presence(r))}%</td><td>×${fmt(compSize(r), 2)}</td><td>${fmt(ratingOf(r), 2)}${ratingFromWhoScored(r) ? ` <span class="hint">${r.rwe ? "est." : "WS"}</span>` : isImputed(r) && ratingOf(r) != null ? ' <span class="hint">media</span>' : ""}</td><td>${fmt(rendContrib(r), 2)}</td>
+        <td>${fmt(100 * presence(r))}%</td><td>×${fmt(compSize(r), 2)}</td><td>${fmt(ratingOf(r), 2)}${ratingTag(r) ? ` <span class="hint">${ratingTag(r)}</span>` : ""}</td><td>${fmt(rendContrib(r), 2)}</td>
         <td>${fmt(r.dom)}</td><td>${fmt(domContrib(r), 2)}</td>
         <td>${r.g == null && r.a == null ? "—" : `${fmt(r.g ?? 0)} / ${fmt(r.a ?? 0)}`}</td><td>${fmt(prodContrib(r), 1)}</td><td>${r.st ? STAGE_LABEL[r.st] : "—"}</td><td>${fmt(exitoOf(r), 1)}</td></tr>`).join("")}</tbody>
     </table></div>`;
@@ -788,7 +812,7 @@ function hideTip() { tip.style.display = "none"; }
 
 // Model "palmarés" over every completed edition: how often each player
 // finishes 1st, 2nd, 3rd, 4th-5th and 6th-10th with the current settings.
-const HISTORY_YEARS = seasons.filter(y => y >= 2006 && y <= 2025).sort((a, b) => a - b);
+const HISTORY_YEARS = seasons.filter(y => y >= 2006 && y <= 2026).sort((a, b) => a - b);
 function renderHistory() {
   const tally = new Map();
   for (const y of HISTORY_YEARS) {
