@@ -258,7 +258,7 @@ footer b { color: var(--ink); }
   <section class="block" id="palmares">
     <details class="sec" open>
       <summary><div><span class="kicker"><b>02</b>Análisis histórico</span><h2>Palmarés del modelo</h2></div></summary>
-      <p class="hint">2006–2026 con los pesos actuales (2026 aún sin votación de la prensa): todos los jugadores que el modelo hace ganar al menos un Balón de Oro, con cuántas veces terminan en cada puesto.</p>
+      <p class="hint">2006–2026 con los pesos actuales: todos los jugadores que el modelo hace ganar al menos un Balón de Oro, con cuántas veces terminan en cada puesto.</p>
       <div class="panel scroll"><table class="medals" id="medals"></table></div>
     </details>
   </section>
@@ -303,7 +303,7 @@ footer b { color: var(--ink); }
         <p><b>Tamaño del torneo (Rendimiento y Dominio):</b> una competición cuenta completa a partir de 6 partidos de su equipo (una Copa América, un Mundial, una liga). Por debajo, en proporción: una final única cuenta 1/6 y la Supercopa de España de 4 equipos 2/6. Así un gran partido en una supercopa no pesa como una temporada entera. El 6 se puede cambiar.</p>
         <p><b>Participación:</b> minutos posibles = partidos que jugó su equipo en esa competición × 90, según el formato y la ronda alcanzada (campeón del Mundial = 7 partidos, 8 desde 2026; liga = 38 o 34). Participación = mín(1, minutos jugados / (70% de los minutos posibles)). Para clasificatorias y amistosos, la referencia es 3 partidos completos.</p>
         <p><b>Intensidad del ajuste:</b> mezcla entre sin ajuste (0%, todas las competiciones ×1) y el peso completo del tier (100%).</p>
-        <p><b>Voto de la prensa:</b> votos del jugador / votos del ganador × 100, con los puntos oficiales de cada edición (o el % de votos en 2010–2015). En 2020 no hubo Balón de Oro y se usan los puntos de The Best FIFA 2020 (Lewandowski 52, Cristiano 38, Messi 35…); los nominados que no estuvieron entre sus 11 candidatos sacan 0. Los no nominados sacan 0.</p>
+        <p><b>Voto de la prensa:</b> votos del jugador / votos del ganador × 100, con los puntos oficiales de cada edición (o el % de votos en 2010–2015). En 2026, sin puntos publicados, se usa el puesto oficial (1º = 100, último = 0). En 2020 no hubo Balón de Oro y se usan los puntos de The Best FIFA 2020 (Lewandowski 52, Cristiano 38, Messi 35…); los nominados que no estuvieron entre sus 11 candidatos sacan 0. Los no nominados sacan 0.</p>
         <p><b>Total:</b> media ponderada de los factores con datos. Si a un jugador le falta un factor, su peso se reparte entre los demás.</p>
         <p><b>Notas de liga antes de 2015/16:</b> ni FotMob ni Sofascore las tienen. 2011/12–2013/14 salen de copias archivadas de WhoScored («WS» en el desglose). 2014/15 se estima por los equipos ideales de cada liga («est.»). En 2006–2011 se usan los premios de cada liga: el mejor jugador (PFA, UNFP, LFP, Oscar del Calcio) recibe 7,87 («mejor liga») y los miembros del equipo ideal o los premiados por posición (PFA, UNFP, LFP, Don Balón, AIC) 7,37 («equipo ideal»), el mismo valor en todas las ligas. El resto recibe el menor valor entre la nota del equipo ideal y su media propia de la temporada («tope ideal» o «media»); lo mismo para los nominados de 2014/15 fuera del equipo ideal. La Bundesliga 2006–2011 y las ligas fuera del top 5 usan la media propia del jugador («media»). Los minutos con * están estimados (partidos × 90') porque la fuente no los publica para esa competición. El Mundial 2022 (nov–dic) cuenta para el Balón de Oro 2023.</p>
       </div>
@@ -592,7 +592,7 @@ function cellStyle(v) {
 
 function buildControls() {
   $("#season").innerHTML = seasons.map(y => {
-    const tag = y === 2020 ? " (reconstruido)" : y === 2026 ? " (sin votación aún)" : "";
+    const tag = y === 2020 ? " (reconstruido)" : "";
     return `<option value="${y}">${y}${tag}</option>`;
   }).join("");
   $("#season").value = state.season;
@@ -707,7 +707,7 @@ function renderStats(list) {
     <div class="card stat"><div class="k">Ganador real (votación)</div><div class="v">${real ? real.p : "—"}</div><div class="d">${!real ? "Aún sin votación" : real.noData ? "Modelo: sin datos" : "Modelo: " + real.modelRank + "º · " + fmt(real.total, 1) + " pts"}</div></div>
     <div class="card stat"><div class="k">Coincidencias en el top 3</div><div class="v">${top3 == null ? "—" : top3 + " de 3"}</div><div class="d">modelo vs prensa</div></div>
     <div class="card stat"><div class="k">Parecido con la votación</div><div class="v">${rho == null ? "—" : fmt(rho, 2)}</div><div class="d">correlación de rangos (1 = mismo orden)</div></div>`;
-  const notes = { 2020: "2020: el premio se canceló por la COVID-19. La lista y el orden «real» son una reconstrucción; el voto de la prensa usa los puntos de The Best FIFA 2020.", 2026: "2026: la gala es el 26 de octubre; todavía no hay votación, así que el factor de prensa no cuenta." };
+  const notes = { 2020: "2020: el premio se canceló por la COVID-19. La lista y el orden «real» son una reconstrucción; el voto de la prensa usa los puntos de The Best FIFA 2020.", 2026: "2026: France Football no publicó los puntos de la votación; el voto de la prensa usa el puesto oficial (1º = 100, 29º = 0)." };
   $("#seasonNote").hidden = !notes[state.season];
   $("#seasonNote").textContent = notes[state.season] || "";
 }
