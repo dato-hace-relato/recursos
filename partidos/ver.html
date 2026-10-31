@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relato del Partido · Dato Hace Relato</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap">
+<link rel="stylesheet" href="estilo.css">
+<style>
+.wrap { max-width: 1240px; }
+header { padding-top: 24px; padding-bottom: 16px; display: flex; flex-direction: column; gap: 14px; }
+.bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+h1 { font-size: clamp(26px, 4.5vw, 40px); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+h1 .flag { width: 34px; height: 23px; }
+h1 .score { color: var(--gold); }
+
+.nav { display: flex; gap: 8px; align-items: center; }
+select, .step { font: 600 14px var(--text); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; height: 38px; transition: border-color var(--ease), background var(--ease); }
+select { padding: 0 34px 0 12px; max-width: 100%; min-width: 0; appearance: none; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%), linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 16px, calc(100% - 12px) 16px; background-size: 5px 5px; background-repeat: no-repeat; }
+.step { width: 38px; display: grid; place-items: center; cursor: pointer; text-decoration: none; flex: none; }
+select:hover, .step:hover { border-color: var(--gold); background: var(--panel-2); }
+.step[aria-disabled="true"] { opacity: .35; pointer-events: none; }
+
+/* The animations are fixed 1280×720 pages; scale them to the available width. */
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #080808; }
+.stage iframe { position: absolute; top: 0; left: 0; width: 1280px; height: 720px; border: 0; transform-origin: 0 0; }
+.hint { color: var(--muted); font-size: 13px; margin: 10px 0 40px; }
+.missing { padding: 60px 0; color: var(--ink-2); }
+.rotate { display: none; }
+@media (max-width: 600px) { .nav { width: 100%; } select { flex: 1; } }
+@media (max-width: 600px) and (orientation: portrait) { .rotate { display: inline; color: var(--gold); } }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <a class="crumb" href="./">← Todos los partidos</a>
+  <div class="bar">
+    <div>
+      <p class="eyebrow" id="ronda">Relato del partido</p>
+      <h1 id="titulo">Relato del partido</h1>
+    </div>
+    <div class="nav">
+      <a class="step" id="prev" aria-label="Partido anterior">←</a>
+      <select id="picker" aria-label="Escoger partido"></select>
+      <a class="step" id="next" aria-label="Partido siguiente">→</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="stage" id="stage"><iframe id="anim" title="Animación del partido"></iframe></div>
+  <p class="hint"><span class="rotate">Gira el teléfono para verlo más grande. </span>Pulsa ▶ para reproducir y ↺ para reiniciar. En computador puedes arrastrar sobre la línea de momentum para moverte por el partido.</p>
+</main>
+
+<script src="partidos.js"></script>
+<script>
+const id = new URLSearchParams(location.search).get('p');
+const i = PARTIDOS.findIndex(p => p.id === id);
+const picker = document.getElementById('picker');
+
+picker.innerHTML = RONDAS.map(r => `<optgroup label="${r.nombre}">${
+  PARTIDOS.filter(p => p.ronda === r.id).map(p => `<option value="${p.id}">${titulo(p)}</option>`).join('')
+}</optgroup>`).join('');
+picker.addEventListener('change', () => { location.href = `ver.html?p=${picker.value}`; });
+
+if (i < 0) {
+  picker.insertAdjacentHTML('afterbegin', '<option value="" selected disabled>Escoge un partido…</option>');
+  document.getElementById('titulo').textContent = 'Partido no encontrado';
+  document.getElementById('main').innerHTML = '<p class="missing">No encontramos ese partido. <a href="./">Ver todos los partidos</a>.</p>';
+  for (const b of ['prev', 'next']) document.getElementById(b).setAttribute('aria-disabled', 'true');
+} else {
+  const p = PARTIDOS[i];
+  picker.value = p.id;
+  document.title = `${titulo(p)} · Relato del Partido`;
+  document.getElementById('ronda').textContent = `${RONDAS.find(r => r.id === p.ronda).nombre} · ${p.fecha}`;
+  document.getElementById('titulo').innerHTML = `
+    <img class="flag" src="${bandera(p.local[1])}" alt="">${p.local[0]}
+    <span class="score">${p.marcador[0]}–${p.marcador[1]}</span>
+    ${p.visita[0]}<img class="flag" src="${bandera(p.visita[1])}" alt="">`;
+  document.getElementById('anim').src = `animaciones/${p.id}.html`;
+
+  // Prev/next follow the dropdown order (by round), not chronological order.
+  const orden = RONDAS.flatMap(r => PARTIDOS.filter(x => x.ronda === r.id));
+  const k = orden.indexOf(p);
+  const link = (el, q) => q ? (el.href = `ver.html?p=${q.id}`, el.title = titulo(q)) : el.setAttribute('aria-disabled', 'true');
+  link(document.getElementById('prev'), orden[k - 1]);
+  link(document.getElementById('next'), orden[k + 1]);
+
+  const stage = document.getElementById('stage'), frame = document.getElementById('anim');
+  new ResizeObserver(([e]) => { frame.style.transform = `scale(${e.contentRect.width / 1280})`; }).observe(stage);
+}
+</script>
+</body>
+</html>
